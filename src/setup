@@ -2,6 +2,10 @@
 
 
 
+SELECTED_OPTION=-1
+
+
+
 function setup() {
     local lang=$1
 
@@ -51,7 +55,7 @@ function show_menu() {
                 esac
                 ;;
             '')
-                selected_option=$choice
+                SELECTED_OPTION=$choice
                 return
                 ;;
             *)
@@ -75,4 +79,31 @@ function setup_pt() {
         "Configurar tudo Automaticamente"
         "Sair"
     )
+
+    while true; do
+        show_menu "${options[@]}"
+        
+        case "$SELECTED_OPTION" in 
+            0) echo "Configurar a Interface Gráfica" ;;
+            1) echo "Configurar o Som e o Áudio" ;;
+            2) echo "Configurar a Rede" ;;
+            3) echo "Configurar o Sistema e Hardware" ;;
+            4) echo "Configurar os Pacotes" ;;
+            5) echo "Configurar Sistemas de Segurança" ;;
+            6) echo "Configurar Backup" ;;
+            7) echo "Configurar tudo Automaticamente" ;;
+            8) 
+                clear
+                echo -e "${RED}"
+                
+                echo "__  __             "
+                echo "\\ \/ /__ _ _   _  "
+                echo " \  // _\` | | | | "
+                echo " /  \\ (_| | |_| | "
+                echo "/_/\\_\\__,_|\__,_|"
+                
+                exit 0 ;;
+            *) echo "Opção inválida. Tente novamente." ;;
+        esac
+    done 
 }
