@@ -3,6 +3,7 @@
 
 
 source "src/setup"
+source "src/check_sudo"
 
 
 
