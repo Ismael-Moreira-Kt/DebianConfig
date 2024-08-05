@@ -167,3 +167,29 @@ function configure_dns() {
 
     echo "DNS configuration applied: $DNS1 ${DNS2:+and $DNS2}"
 }
+
+
+
+function show_network_status() {
+    echo "Showing network status..."
+
+    echo "IP Address and Routing:"
+    ip addr show
+    echo
+    ip route show
+
+    echo
+    echo "DNS Configuration:"
+    cat /etc/resolv.conf
+
+    echo
+    echo "Network status displayed successfully."
+
+    while true; do
+        read -rsn1 input
+        
+        if [[ $input == 'q' ]]; then
+            break
+        fi
+    done
+}
