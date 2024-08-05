@@ -111,3 +111,36 @@ function install_audio_tools() {
     sudo apt update -y
     sudo apt install -y alsa-utils pavucontrol pulseaudio
 }
+
+
+
+function diagnose_audio_system() {
+    echo "Displaying detailed information about the audio system..."   
+    echo
+    echo "1. Input devices (microphones):"
+    
+    pactl list short sources
+    
+    echo
+    echo "2. Output devices (speakers/headphones):"
+    
+    pactl list short sinks
+    
+    echo
+    echo "3. Active audio profiles:"
+    
+    pactl list cards | grep -A 20 "Card #" | grep 'active profile'
+    
+    echo
+    echo "4. PulseAudio status:"
+    
+    systemctl --user status pulseaudio | grep Active
+    
+    echo
+    echo "5. ALSA control volume levels:"
+    
+    amixer scontents
+
+    echo
+    echo "Audio information displayed successfully."
+}
