@@ -1,0 +1,126 @@
+#!/bin/bash
+
+
+
+function configure_package_management_pt() {
+    local CHOICE=-1
+
+    while true; do
+        clear
+
+        echo "Escolha uma opção para configurar a gestão de pacotes:"
+        echo "1. Configurar Preferências do APT"
+        echo "2. Configurar Aptitude"
+        echo "3. Configurar Cache de Pacotes"
+        echo "4. Configurar Atualizações Automáticas"
+        echo "5. Instalar Ferramentas de Gestão de Pacotes"
+        echo "6. Mostrar Configuração de Gestão de Pacotes"
+        echo "7. Voltar ao Menu Principal"
+
+        read -p "Sua escolha (1-7): " CHOICE
+
+        case $CHOICE in
+            1) configure_apt_preferences ;;
+            2) set_up_aptitude ;;
+            3) configure_package_caching ;;
+            4) configure_automatic_upgrades ;;
+            5) install_package_management_tools ;;
+            6) show_package_management_configuration ;;
+            7) break ;;
+            *) echo "Opção inválida. Por favor, tente novamente." ;;
+        esac
+    done
+}
+
+
+
+function configure_apt_preferences() {
+    echo "Configurando preferências do APT..."
+
+    sudo mkdir -p /etc/apt/preferences.d
+
+    echo "Package: *" | sudo tee /etc/apt/preferences.d/custom.pref > /dev/null
+    echo "Pin: release a=stable" | sudo tee -a /etc/apt/preferences.d/custom.pref > /dev/null
+    echo "Pin-Priority: 500" | sudo tee -a /etc/apt/preferences.d/custom.pref > /dev/null
+    echo "Preferências do APT configuradas."
+}
+
+
+
+function set_up_aptitude() {
+    echo "Configurando o Aptitude..."
+
+    sudo apt install -y aptitude
+
+    echo "Aptitude instalado e configurado."
+}
+
+
+
+function configure_package_caching() {
+    echo "Configurando cache de pacotes..."
+    echo "Configurando diretórios de cache do APT..."
+    
+    sudo mkdir -p /var/cache/apt/archives/partial
+    sudo chmod 755 /var/cache/apt/archives/partial
+
+    echo "Configurando limpeza do cache do APT..."
+    echo "APT::Clean-Installed \"true\";" | sudo tee /etc/apt/apt.conf.d/10clean > /dev/null
+    echo "Cache de pacotes configurado."
+}
+
+
+
+function configure_automatic_upgrades() {
+    echo "Configurando atualizações automáticas..."
+
+    echo "Instalando unattended-upgrades..."
+
+    sudo apt install -y unattended-upgrades
+
+    echo "Configurando unattended-upgrades..."
+
+    sudo dpkg-reconfigure --priority=low unattended-upgrades
+
+    echo "Atualizações automáticas configuradas."
+}
+
+
+
+function install_package_management_tools() {
+    echo "Instalando ferramentas de gestão de pacotes..."
+
+    sudo apt install -y apt-listchanges debconf-utils
+
+    echo "Ferramentas de gestão de pacotes instaladas."
+}
+
+
+
+function show_package_management_configuration() {
+    echo "Mostrando configuração de gestão de pacotes..."
+
+    echo "Preferências do APT:"
+
+    cat /etc/apt/preferences.d/custom.pref
+
+    echo
+    echo "Configuração de Cache do APT:"
+
+    cat /etc/apt/apt.conf.d/10clean
+
+    echo
+    echo "Ferramentas de Gestão de Pacotes Instaladas:"
+
+    dpkg -l | grep -E 'aptitude|apt-listchanges|debconf-utils'
+
+    echo "Configuração de gestão de pacotes exibida."
+
+    while true; do
+        read -rsn1 input
+        
+        if [[ $input == 'q' ]]; then
+            break
+        fi
+    done
+}
