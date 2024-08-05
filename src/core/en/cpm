@@ -95,3 +95,33 @@ function install_package_management_tools() {
 
     echo "Package management tools installed."
 }
+
+
+
+function show_package_management_configuration() {
+    echo "Showing package management configuration..."
+
+    echo "APT Preferences:"
+
+    cat /etc/apt/preferences.d/custom.pref
+
+    echo
+    echo "APT Caching Configuration:"
+
+    cat /etc/apt/apt.conf.d/10clean
+
+    echo
+    echo "Installed Package Management Tools:"
+
+    dpkg -l | grep -E 'aptitude|apt-listchanges|debconf-utils'
+
+    echo "Package management configuration displayed."
+
+    while true; do
+        read -rsn1 input
+        
+        if [[ $input == 'q' ]]; then
+            break
+        fi
+    done
+}
