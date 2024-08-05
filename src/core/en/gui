@@ -121,3 +121,46 @@ function retro() {
 
     echo "Retro style theme applied successfully!"
 }
+
+
+
+function list_packages() {
+    clear
+
+    echo "Packages used for each style:"
+    echo
+    echo "1. GNOME Dark & Light:"
+    echo "   - gnome-tweaks: Allows users to adjust GNOME settings."
+    echo "   - gnome-shell-extensions: Adds additional functionalities to GNOME Shell."
+    echo "   - papirus-icon-theme: Provides a modern icon set."
+    echo
+    echo "2. macOS Style:"
+    echo "   - gnome-tweaks: Allows users to adjust GNOME settings."
+    echo "   - gnome-shell-extensions: Adds additional functionalities to GNOME Shell."
+    echo "   - WhiteSur-gtk-theme: A macOS-like GTK theme."
+    echo "   - WhiteSur-icon-theme: A macOS-like icon theme."
+    echo
+    echo "3. Windows Style:"
+    echo "   - gnome-tweaks: Allows users to adjust GNOME settings."
+    echo "   - gnome-shell-extensions: Adds additional functionalities to GNOME Shell."
+    echo "   - Windows-10: A Windows 10-like GTK theme."
+    echo "   - Windows-10-Icons: A Windows 10-like icon theme."
+    echo
+    echo "4. Retro Style:"
+    echo "   - gnome-tweaks: Allows users to adjust GNOME settings."
+    echo "   - gnome-shell-extensions: Adds additional functionalities to GNOME Shell."
+    echo "   - numix-icon-theme: Provides a modern icon set."
+    echo "   - Adapta-gtk-theme: A theme inspired by retro aesthetics."
+
+    echo "Press 'q' to continue..."
+ 
+    while true; do
+        read -rsn1 input
+        
+        if [[ $input == 'q' ]]; then
+            break
+        fi
+    done
+
+    choose_graphical_interface_en
+}
