@@ -58,3 +58,63 @@ function configure_network_interface() {
         echo "Interface $INTERFACE does not exist. Please try again."
     fi
 }
+
+
+
+function set_static_ip() {
+    echo "Setting up network configuration..."
+
+    while true; do
+        echo "Available network interfaces:"
+        ip link show | awk -F: '$1 !~ "lo|vir|wl|^[^0-9]" {print $2}'
+        
+        read -p "Enter the network interface you want to configure (e.g., eth0): " INTERFACE
+        if ip link show "$INTERFACE" &> /dev/null; then
+            break
+        else
+            echo "Invalid interface. Please try again."
+        fi
+    done
+
+    echo "Would you like to configure a static IP address or use DHCP?"
+    echo "1. Static IP Address"
+    echo "2. Use DHCP (Automatic configuration)"
+
+    read -p "Your choice (1-2): " IP_CHOICE
+
+    if [ "$IP_CHOICE" == "1" ]; then
+        echo "You've chosen to configure a static IP address."
+        
+        DEFAULT_IP="192.168.1.100"
+        DEFAULT_NETMASK="255.255.255.0"
+        DEFAULT_GATEWAY="192.168.1.1"
+        DEFAULT_DNS="8.8.8.8"
+
+        read -p "Enter the static IP address [default: $DEFAULT_IP]: " IP_ADDRESS
+        IP_ADDRESS=${IP_ADDRESS:-$DEFAULT_IP}
+
+        read -p "Enter the netmask [default: $DEFAULT_NETMASK]: " NETMASK
+        NETMASK=${NETMASK:-$DEFAULT_NETMASK}
+
+        read -p "Enter the gateway [default: $DEFAULT_GATEWAY]: " GATEWAY
+        GATEWAY=${GATEWAY:-$DEFAULT_GATEWAY}
+
+        read -p "Enter the DNS server [default: $DEFAULT_DNS]: " DNS
+        DNS=${DNS:-$DEFAULT_DNS}
+
+        sudo ip addr add "$IP_ADDRESS/$NETMASK" dev "$INTERFACE"
+        sudo ip route add default via "$GATEWAY"
+        echo "nameserver $DNS" | sudo tee /etc/resolv.conf > /dev/null
+
+        echo "Static IP configuration applied to $INTERFACE."
+    else
+        echo "You've chosen to use DHCP."
+
+        sudo ip addr flush dev "$INTERFACE"
+        sudo ip route flush dev "$INTERFACE"
+
+        sudo dhclient "$INTERFACE"
+
+        echo "DHCP configuration applied to $INTERFACE."
+    fi
+}
