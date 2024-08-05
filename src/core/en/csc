@@ -57,3 +57,35 @@ function adjust_balance() {
     
     echo "Audio balance adjusted successfully!"
 }
+
+
+
+function set_input_device() {
+    echo "Setting the default input device..."
+    default_input=$(pactl list sources short | grep -m 1 RUNNING | awk '{print $1}')
+    
+    if [ -z "$default_input" ]; then
+        echo "No active input devices found, using the first available one."
+        default_input=$(pactl list sources short | awk '{print $1}' | head -n 1)
+    fi
+    
+    pactl set-default-source "$default_input"
+    
+    echo "Input device set to $default_input."
+}
+
+
+
+function set_output_device() {
+    echo "Setting the default output device..."
+    default_output=$(pactl list sinks short | grep -m 1 RUNNING | awk '{print $1}')
+    
+    if [ -z "$default_output" ]; then
+        echo "No active output devices found, using the first available one."
+        default_output=$(pactl list sinks short | awk '{print $1}' | head -n 1)
+    fi
+    
+    pactl set-default-sink "$default_output"
+    
+    echo "Output device set to $default_output."
+}
