@@ -241,3 +241,13 @@ function show_system_info() {
         fi
     done
 }
+
+
+
+function install_printer_scanner_software() {
+    echo "Installing printer and scanner software..."
+
+    sudo apt install -y cups hplip sane
+
+    echo "Printer and scanner software installed."
+}
