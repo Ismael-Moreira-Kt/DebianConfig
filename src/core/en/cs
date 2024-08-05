@@ -120,3 +120,14 @@ function set_language_and_keyboard() {
         fi
     done
 }
+
+
+
+function install_and_configure_software() {
+    echo "Installing and configuring essential software..."
+    
+    sudo apt update -y
+    sudo apt install -y curl git vim htop build-essential preload
+
+    echo "Essential software installed successfully."
+}
