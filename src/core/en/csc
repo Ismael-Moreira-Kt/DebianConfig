@@ -102,3 +102,12 @@ function configure_audio_profile() {
     
     echo "Audio profile $default_profile configured for sound card $default_card."
 }
+
+
+
+function install_audio_tools() {
+    echo "Installing audio tools (ALSA and PulseAudio)..."
+
+    sudo apt update -y
+    sudo apt install -y alsa-utils pavucontrol pulseaudio
+}
