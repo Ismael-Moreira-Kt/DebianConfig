@@ -80,3 +80,24 @@ function macOS() {
 
     echo "MacOS style theme applied successfully!"
 }
+
+
+
+function windows() {
+    sudo apt update -y
+    sudo apt install -y gnome-tweaks gnome-shell-extensions
+
+    mkdir -p ~/.themes
+    cd ~/.themes
+    git clone https://github.com/B00merang-Project/Windows-10 Windows10
+
+    mkdir -p ~/.icons
+    cd ~/.icons
+    git clone https://github.com/B00merang-Project/Windows-10-Icons.git Windows10
+
+    gsettings set org.gnome.desktop.interface gtk-theme "Windows10"
+    gsettings set org.gnome.desktop.interface icon-theme "Windows10"
+    gsettings set org.gnome.desktop.interface cursor-theme "Windows10"
+
+    echo "Windows style theme applied successfully!"
+}
