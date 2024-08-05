@@ -1,0 +1,53 @@
+#!/bin/bash
+
+
+
+function configure_system_en() {
+    local CHOICE=-1
+
+    while true; do
+        clear
+
+        echo "Choose an option to configure the system and hardware:"
+        echo "1. Set Timezone"
+        echo "2. Configure Hostname"
+        echo "3. Set System Language and Keyboard Layout"
+        echo "4. Install and Configure Essential Software"
+        echo "5. Detect and Install Video Drivers"
+        echo "6. Optimize CPU Performance"
+        echo "7. Configure RAM and SSD Settings"
+        echo "8. Install Printer and Scanner Software"
+        echo "9. Configure Power Settings"
+        echo "10. Configure System Security"
+        echo "11. Update Firmware"
+        echo "12. Configure Backup"
+        echo "13. Manage Device Drivers"
+        echo "14. Optimize Temporary Files and Cache"
+        echo "15. Install Diagnostic Tools"
+        echo "16. Show System Information"
+        echo "17. Return to Main Menu"
+
+        read -p "Your choice (1-17): " CHOICE
+
+        case $CHOICE in
+            1) set_timezone ;;
+            2) configure_hostname ;;
+            3) set_language_and_keyboard ;;
+            4) install_and_configure_software ;;
+            5) detect_and_install_video_drivers ;;
+            6) optimize_cpu_performance ;;
+            7) configure_ram_and_ssd ;;
+            8) install_printer_scanner_software ;;
+            9) configure_power_settings ;;
+            10) configure_security ;;
+            11) update_firmware ;;
+            12) configure_backup ;;
+            13) manage_device_drivers ;;
+            14) optimize_temp_files ;;
+            15) install_diagnostic_tools ;;
+            16) show_system_info ;;
+            17) break ;;
+            *) echo "Invalid option. Please try again." ;;
+        esac
+    done
+}

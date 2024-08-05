@@ -8,6 +8,7 @@ source "src/core/en/csc"
 source "src/core/pt/csc"
 source "src/core/en/cnt"
 source "src/core/pt/cnt"
+source "src/core/en/cs"
 
 
 
