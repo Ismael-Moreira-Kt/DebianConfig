@@ -144,3 +144,25 @@ function diagnose_audio_system() {
     echo
     echo "Audio information displayed successfully."
 }
+
+
+
+function show_audio_info() {
+    echo "Performing audio system diagnostics..."
+    echo "PulseAudio status:"
+
+    systemctl --user status pulseaudio | grep Active
+    
+    echo
+    echo "ALSA audio devices:"
+    
+    aplay -l
+    
+    echo
+    echo "Volume levels of ALSA controls:"
+    
+    amixer scontents
+    
+    echo
+    echo "Diagnostics completed. Check the above results for possible problems."
+}
