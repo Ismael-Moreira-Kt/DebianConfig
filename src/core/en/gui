@@ -31,3 +31,16 @@ function choose_graphical_interface_en() {
         *) echo "Invalid choice. Please select a number between 1 and 5." ;;
     esac
 }
+
+
+
+function gnome_dark() {
+    sudo apt update -y
+    sudo apt install -y gnome-tweaks gnome-shell-extensions papirus-icon-theme
+
+    gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
+    gsettings set org.gnome.desktop.interface icon-theme "Papirus"
+    gsettings set org.gnome.desktop.interface cursor-theme "Adwaita"
+
+    echo "Gnome Dark theme applied successfully!"
+}
