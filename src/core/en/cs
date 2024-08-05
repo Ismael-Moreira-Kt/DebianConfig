@@ -89,3 +89,34 @@ function configure_hostname() {
         fi
     done
 }
+
+
+
+function set_language_and_keyboard() {
+    while true; do
+        echo "Configuring system language and keyboard layout..."
+        read -p "Enter the system locale (e.g., en_US.UTF-8): " LOCALE
+        
+        if locale -a | grep -q "^$LOCALE\$"; then
+            sudo update-locale LANG="$LOCALE"
+        
+            break
+        else
+            echo "Invalid locale. Please try again."
+        fi
+    done
+
+    while true; do
+        read -p "Enter the keyboard layout (e.g., us): " KEYBOARD_LAYOUT
+        
+        if localectl list-keymaps | grep -q "^$KEYBOARD_LAYOUT$"; then
+            sudo localectl set-keymap "$KEYBOARD_LAYOUT"
+        
+            echo "System language set to $LOCALE and keyboard layout set to $KEYBOARD_LAYOUT."
+        
+            break
+        else
+            echo "Invalid keyboard layout. Please try again."
+        fi
+    done
+}
