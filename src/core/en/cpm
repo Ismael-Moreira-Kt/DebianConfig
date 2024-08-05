@@ -33,3 +33,16 @@ function configure_package_management_en() {
         esac
     done
 }
+
+
+
+function configure_apt_preferences() {
+    echo "Configuring APT preferences..."
+
+    sudo mkdir -p /etc/apt/preferences.d
+
+    echo "Package: *" | sudo tee /etc/apt/preferences.d/custom.pref > /dev/null
+    echo "Pin: release a=stable" | sudo tee -a /etc/apt/preferences.d/custom.pref > /dev/null
+    echo "Pin-Priority: 500" | sudo tee -a /etc/apt/preferences.d/custom.pref > /dev/null
+    echo "APT preferences configured."
+}
