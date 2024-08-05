@@ -270,10 +270,20 @@ function configure_security() {
     echo "Configuring system security..."
 
     sudo apt install -y ufw fail2ban
-
     sudo ufw enable
     sudo ufw default deny incoming
     sudo ufw default allow outgoing
 
     echo "Security configuration completed with UFW and Fail2Ban."
+}
+
+
+
+function update_firmware() {
+    echo "Updating system firmware..."
+
+    sudo apt install -y fwupd
+    sudo fwupdmgr update
+
+    echo "System firmware updated."
 }
