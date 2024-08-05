@@ -14,6 +14,55 @@ function setup() {
 
 
 
+function show_menu() {
+    local options=("$@")
+    local choice=0
+    local input
+
+    while true; do
+        clear
+        
+        for i in "${!options[@]}"; do
+            if [ $i -eq $choice ]; then
+                echo -e "> ${options[$i]} <"
+            else
+                echo "  ${options[$i]}"
+            fi
+        done
+
+        read -rsn1 input
+
+        case $input in
+            $'\x1b')
+                read -rsn2 input
+                case $input in
+                    '[A')
+                        ((choice--))
+                        if [ $choice -lt 0 ]; then
+                            choice=$((${#options[@]} - 1))
+                        fi
+                        ;;
+                    '[B')
+                        ((choice++))
+                        if [ $choice -ge ${#options[@]} ]; then
+                            choice=0
+                        fi
+                        ;;
+                esac
+                ;;
+            '')
+                selected_option=$choice
+                return
+                ;;
+            *)
+                echo "Invalid input. Use arrow keys to navigate and Enter to select."
+                ;;
+        esac
+    done
+}
+
+
+
 function setup_pt() {
     local options=(
         "Configurar a Interface Gráfica"
