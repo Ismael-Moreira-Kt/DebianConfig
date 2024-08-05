@@ -251,3 +251,15 @@ function install_printer_scanner_software() {
 
     echo "Printer and scanner software installed."
 }
+
+
+
+function configure_power_settings() {
+    echo "Configuring power settings..."
+
+    sudo apt install -y tlp
+    sudo systemctl enable tlp
+    sudo systemctl start tlp
+
+    echo "Power settings configured with TLP."
+}
