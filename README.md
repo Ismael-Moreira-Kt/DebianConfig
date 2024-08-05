@@ -12,3 +12,19 @@ sudo apt install -y git
 ```
 
 Make sure you have sudo permissions, the script requires superuser privileges to install packages and apply settings.
+
+<br><br>
+
+## Installation
+Clone the archive containing the DebianConf script:
+
+```bash
+git clone https://github.com/Ismael-Moreira-Kt/DebianConfig
+cd DebianConfig
+```
+
+Give execution permission to the main script:
+
+```bash
+chmod +x dc
+```
