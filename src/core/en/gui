@@ -44,3 +44,16 @@ function gnome_dark() {
 
     echo "Gnome Dark theme applied successfully!"
 }
+
+
+
+function gnome_light() {
+    sudo apt update -y
+    sudo apt install -y gnome-tweaks gnome-shell-extensions papirus-icon-theme
+
+    gsettings set org.gnome.desktop.interface gtk-theme "Adwaita"
+    gsettings set org.gnome.desktop.interface icon-theme "Papirus"
+    gsettings set org.gnome.desktop.interface cursor-theme "Adwaita"
+    
+    echo "Gnome Light theme applied successfully!"
+}
