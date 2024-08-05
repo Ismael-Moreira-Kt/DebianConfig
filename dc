@@ -26,7 +26,24 @@ function show_language_menu() {
 
 
 
-until [[ $choice -ge 0 && $choice -le 2 ]]; do
-    show_language_menu
-    read -p "Your choice: " choice
-done
+function main() {
+    until [[ $CHOICE -ge 1 && $CHOICE -le 2 ]]; do
+        show_language_menu
+        read -p "Your choice: " CHOICE
+    done
+
+
+    lang=""
+
+    if ((CHOICE == 1)); then
+        lang="PT"
+    else
+        lang="EN"
+    fi
+
+    setup "$lang"
+}
+
+
+
+main
