@@ -46,3 +46,14 @@ function configure_apt_preferences() {
     echo "Pin-Priority: 500" | sudo tee -a /etc/apt/preferences.d/custom.pref > /dev/null
     echo "APT preferences configured."
 }
+
+
+
+function set_up_aptitude() {
+    echo "Setting up Aptitude..."
+
+
+    sudo apt install -y aptitude
+
+    echo "Aptitude installed and configured."
+}
