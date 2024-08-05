@@ -166,3 +166,40 @@ function show_audio_info() {
     echo
     echo "Diagnostics completed. Check the above results for possible problems."
 }
+
+
+
+function describe_audio_packages() {
+    clear
+
+    echo "Packages used for audio configuration:"
+    echo
+    echo "1. PulseAudio:"
+    echo " - pulseaudio: Sound server that manages audio devices on the system."
+    echo " - pulseaudio-utils: Set of utilities for controlling and configuring PulseAudio."
+    echo
+    echo "2. ALSA (Advanced Linux Sound Architecture):"
+    echo " - alsa-utils: Set of utilities for controlling ALSA sound devices."
+    echo " - alsa-oss: OSS emulator for ALSA devices."
+    echo
+    echo "3. Additional Drivers and Utilities:"
+    echo " - pavucontrol: Graphical interface for controlling audio devices with PulseAudio."
+    echo " - pasystray: Tray icon for quick control of PulseAudio."
+    echo " - gnome-alsamixer: Graphical interface for controlling ALSA audio devices."
+    echo
+    echo "4. Sound Quality Enhancement Packages:"
+    echo " - ladspa-sdk: Set of plugins for audio processing."
+    echo " - pulseaudio-equalizer: Graphical equalizer for adjusting audio frequencies in PulseAudio."
+    echo
+    echo "Press 'q' to continue..."
+
+    while true; do
+        read -rsn1 input
+
+        if [[ $input == 'q' ]]; then
+            break
+        fi
+    done
+
+    choose_sound_configuration_en
+}
