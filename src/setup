@@ -2,6 +2,10 @@
 
 
 
+source "src/core/en/gui"
+
+
+
 SELECTED_OPTION=-1
 
 
@@ -127,7 +131,7 @@ function setup_en() {
         show_menu "${options[@]}"
         
         case "$SELECTED_OPTION" in 
-            0) echo "Configuring the Graphical Interface" ;;
+            0) choose_graphical_interface_en ;;
             1) echo "Configuring Sound and Audio" ;;
             2) echo "Setting up the network" ;;
             3) echo "Configuring the System and Hardware" ;;

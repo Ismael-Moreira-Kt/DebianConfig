@@ -1,0 +1,33 @@
+#!/bin/bash
+
+
+
+function choose_graphical_interface_en() {
+    CHOICE=-1
+
+    until [[ $CHOICE -ge 1 && $CHOICE -le 6 ]]; do
+        clear 
+
+        echo "Choose your graphical interface style:"
+        echo "1. GNOME Dark"
+        echo "2. GNOME Light"
+        echo "3. macOS Style"
+        echo "4. Windows Style"
+        echo "5. Retro Style"
+        echo "6. List Packages"
+        echo "7. Back to menu"
+
+        read -p "Your choice (1-7): " CHOICE
+    done
+
+    case $CHOICE in
+        1) gnome_dark ;;
+        2) gnome_light ;;
+        3) macOS ;;
+        4) windows ;;
+        5) retro ;;
+        6) list_packages ;;
+        7) break;;
+        *) echo "Invalid choice. Please select a number between 1 and 5." ;;
+    esac
+}
