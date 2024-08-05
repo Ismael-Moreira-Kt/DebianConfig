@@ -31,3 +31,30 @@ function configure_network_en() {
         esac
     done
 }
+
+
+
+function configure_network_interface() {
+    echo "Configuring network interface..."
+
+    echo "Available network interfaces:"
+    ip link show | awk -F: '$1 !~ "lo|vir|wl|^[^0-9]" {print $2}'
+
+    read -p "Enter the interface to configure (e.g., eth0): " INTERFACE
+
+    if ip link show "$INTERFACE" &> /dev/null; then
+        read -p "Do you want to enable or disable this interface? (enable/disable): " ACTION
+
+        if [ "$ACTION" == "enable" ]; then
+            sudo ip link set "$INTERFACE" up
+            echo "Interface $INTERFACE enabled."
+        elif [ "$ACTION" == "disable" ]; then
+            sudo ip link set "$INTERFACE" down
+            echo "Interface $INTERFACE disabled."
+        else
+            echo "Invalid action. Please try again."
+        fi
+    else
+        echo "Interface $INTERFACE does not exist. Please try again."
+    fi
+}
