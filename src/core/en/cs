@@ -51,3 +51,21 @@ function configure_system_en() {
         esac
     done
 }
+
+
+
+function set_timezone() {
+    while true; do
+        echo "Setting the system timezone..."
+        read -p "Enter the timezone (e.g., America/New_York): " TIMEZONE
+        
+        if timedatectl list-timezones | grep -q "^$TIMEZONE$"; then
+            sudo timedatectl set-timezone "$TIMEZONE"
+            echo "Timezone set to $TIMEZONE."
+        
+            break
+        else
+            echo "Invalid timezone. Please try again."
+        fi
+    done
+}
