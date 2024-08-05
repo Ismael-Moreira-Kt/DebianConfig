@@ -7,6 +7,7 @@ source "src/core/pt/gui"
 source "src/core/en/csc"
 source "src/core/pt/csc"
 source "src/core/en/cnt"
+source "src/core/pt/cnt"
 
 
 
@@ -94,7 +95,7 @@ function setup_pt() {
         case "$SELECTED_OPTION" in 
             0) choose_graphical_interface_pt ;;
             1) choose_sound_configuration_pt ;;
-            2) echo "Configurar a Rede" ;;
+            2) configure_network_pt ;;
             3) echo "Configurar o Sistema e Hardware" ;;
             4) echo "Configurar os Pacotes" ;;
             5) echo "Configurar Sistemas de Segurança" ;;
