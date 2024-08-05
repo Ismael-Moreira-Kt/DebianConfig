@@ -57,3 +57,26 @@ function gnome_light() {
     
     echo "Gnome Light theme applied successfully!"
 }
+
+
+
+function macOS() {
+    sudo apt update -y
+    sudo apt install -y gnome-tweaks gnome-shell-extensions
+
+    mkdir -p ~/.themes
+    cd ~/.themes
+    git clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git WhiteSur
+    cd WhiteSur
+    ./install.sh
+
+    mkdir -p ~/.icons
+    cd ~/.icons
+    git clone https://github.com/vinceliuice/WhiteSur-icon-theme.git WhiteSur
+
+    gsettings set org.gnome.desktop.interface gtk-theme "WhiteSur"
+    gsettings set org.gnome.desktop.interface icon-theme "WhiteSur"
+    gsettings set org.gnome.desktop.interface cursor-theme "WhiteSur"
+
+    echo "MacOS style theme applied successfully!"
+}
