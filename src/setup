@@ -11,3 +11,19 @@ function setup() {
         setup_en
     fi
 }
+
+
+
+function setup_pt() {
+    local options=(
+        "Configurar a Interface Gráfica"
+        "Configurar o Som e o Áudio"
+        "Configurar a Rede"
+        "Configurar o Sistema e Hardware"
+        "Configurar os Pacotes"
+        "Configurar Sistemas de Segurança"
+        "Configurar Backup"
+        "Configurar tudo Automaticamente"
+        "Sair"
+    )
+}
