@@ -1,0 +1,205 @@
+#!/bin/bash
+
+
+
+function choose_sound_configuration_pt() {
+    local CHOICE=-1
+
+    while true; do
+        clear
+
+        echo "Escolha uma opção para configurar som e áudio:"
+        echo "1. Ajustar volume"
+        echo "2. Ajustar balanço de áudio"
+        echo "3. Configurar dispositivo de entrada"
+        echo "4. Configurar dispositivo de saída"
+        echo "5. Configurar perfil de áudio"
+        echo "6. Instalar ferramentas de áudio"
+        echo "7. Mostrar informações do sistema de áudio"
+        echo "8. Diagnóstico do sistema de áudio"
+        echo "9. Listar Pacotes"
+        echo "10. Voltar ao menu principal"
+
+        read -p "Sua escolha (1-10): " CHOICE
+
+        case $CHOICE in
+            1) adjust_volume ;;
+            2) adjust_balance ;;
+            3) set_input_device ;;
+            4) set_output_device ;;
+            5) configure_audio_profile ;;
+            6) install_audio_tools ;;
+            7) show_audio_info ;;
+            8) diagnose_audio_system ;;
+            9) describe_audio_packages ;;
+            10) break ;;
+            *) echo "Opção inválida. Por favor, tente novamente." ;;
+        esac
+    done
+}
+
+
+
+function adjust_volume() {
+    echo "Ajustando volume..."
+    
+    amixer -D pulse sset Master 80%
+    
+    echo "Volume ajustado com sucesso!"
+}
+
+
+
+function adjust_balance() {
+    echo "Ajustando balanço de áudio..."
+
+    amixer -D pulse sset Master 50%,50%
+    
+    echo "Balanço de áudio ajustado com sucesso!"
+}
+
+
+
+function set_input_device() {
+    echo "Configurando o dispositivo de entrada padrão..."
+    default_input=$(pactl list sources short | grep -m 1 RUNNING | awk '{print $1}')
+    
+    if [ -z "$default_input" ]; then
+        echo "Nenhum dispositivo de entrada ativo encontrado, usando o primeiro disponível."
+        default_input=$(pactl list sources short | awk '{print $1}' | head -n 1)
+    fi
+    
+    pactl set-default-source "$default_input"
+    
+    echo "Dispositivo de entrada configurado para $default_input."
+}
+
+
+
+function set_output_device() {
+    echo "Configurando o dispositivo de saída padrão..."
+    default_output=$(pactl list sinks short | grep -m 1 RUNNING | awk '{print $1}')
+    
+    if [ -z "$default_output" ]; then
+        echo "Nenhum dispositivo de saída ativo encontrado, usando o primeiro disponível."
+        default_output=$(pactl list sinks short | awk '{print $1}' | head -n 1)
+    fi
+    
+    pactl set-default-sink "$default_output"
+    
+    echo "Dispositivo de saída configurado para $default_output."
+}
+
+
+
+function configure_audio_profile() {
+    echo "Configurando o perfil de áudio padrão..."
+    
+    default_card=$(pactl list cards short | awk '{print $1}' | head -n 1)
+    default_profile=$(pactl list cards | grep -A 20 "Card #$default_card" | grep 'output:' | awk '{print $1}' | head -n 1)
+    
+    pactl set-card-profile "$default_card" "$default_profile"
+    
+    echo "Perfil de áudio $default_profile configurado para a placa de som $default_card."
+}
+
+
+
+function install_audio_tools() {
+    echo "Instalando ferramentas de áudio (ALSA e PulseAudio)..."
+
+    sudo apt update -y
+    sudo apt install -y alsa-utils pavucontrol pulseaudio
+}
+
+
+
+function diagnose_audio_system() {
+    echo "Exibindo informações detalhadas sobre o sistema de áudio..."   
+    echo
+    echo "1. Dispositivos de entrada (microfones):"
+    
+    pactl list short sources
+    
+    echo
+    echo "2. Dispositivos de saída (alto-falantes/fones de ouvido):"
+    
+    pactl list short sinks
+    
+    echo
+    echo "3. Perfis de áudio ativos:"
+    
+    pactl list cards | grep -A 20 "Card #" | grep 'active profile'
+    
+    echo
+    echo "4. Status do PulseAudio:"
+    
+    systemctl --user status pulseaudio | grep Active
+    
+    echo
+    echo "5. Níveis de volume dos controles ALSA:"
+    
+    amixer scontents
+
+    echo
+    echo "Informações de áudio exibidas com sucesso."
+}
+
+
+
+function show_audio_info() {
+    echo "Realizando diagnóstico do sistema de áudio..."
+    echo "Status do PulseAudio:"
+
+    systemctl --user status pulseaudio | grep Active
+    
+    echo
+    echo "Dispositivos de áudio ALSA:"
+    
+    aplay -l
+    
+    echo
+    echo "Níveis de volume dos controles ALSA:"
+    
+    amixer scontents
+    
+    echo
+    echo "Diagnóstico concluído. Verifique os resultados acima para possíveis problemas."
+}
+
+
+
+function describe_audio_packages() {
+    clear
+
+    echo "Pacotes usados para configuração de áudio:"
+    echo
+    echo "1. PulseAudio:"
+    echo " - pulseaudio: Servidor de som que gerencia dispositivos de áudio no sistema."
+    echo " - pulseaudio-utils: Conjunto de utilitários para controlar e configurar o PulseAudio."
+    echo
+    echo "2. ALSA (Advanced Linux Sound Architecture):"
+    echo " - alsa-utils: Conjunto de utilitários para controlar dispositivos de som ALSA."
+    echo " - alsa-oss: Emulador OSS para dispositivos ALSA."
+    echo
+    echo "3. Drivers e utilitários adicionais:"
+    echo " - pavucontrol: Interface gráfica para controle de dispositivos de áudio com PulseAudio."
+    echo " - pasystray: Ícone na bandeja para controle rápido do PulseAudio."
+    echo " - gnome-alsamixer: Interface gráfica para controle de dispositivos de áudio ALSA."
+    echo
+    echo "4. Pacotes de aprimoramento de qualidade de som:"
+    echo " - ladspa-sdk: Conjunto de plugins para processamento de áudio."
+    echo " - pulseaudio-equalizer: Equalizador gráfico para ajuste de frequências de áudio no PulseAudio."
+    echo
+    echo "Pressione 'q' para continuar..."
+
+    while true; do
+        read -rsn1 input
+
+        if [[ $input == 'q' ]]; then
+            break
+        fi
+    done
+
+    choose_sound_configuration_pt
+}
