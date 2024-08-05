@@ -1,0 +1,166 @@
+#!/bin/bash
+
+
+
+function choose_graphical_interface_pt() {
+    CHOICE=-1
+
+    until [[ $CHOICE -ge 1 && $CHOICE -le 7 ]]; do
+        clear 
+
+        echo "Escolha o estilo da sua interface gráfica:"
+        echo "1. GNOME Dark"
+        echo "2. GNOME Light"
+        echo "3. Estilo macOS"
+        echo "4. Estilo Windows"
+        echo "5. Estilo Retro"
+        echo "6. Listar Pacotes"
+        echo "7. Voltar ao menu"
+
+        read -p "Sua escolha (1-7): " CHOICE
+    done
+
+    case $CHOICE in
+        1) gnome_dark ;;
+        2) gnome_light ;;
+        3) macOS ;;
+        4) windows ;;
+        5) retro ;;
+        6) list_packages ;;
+        7) break;;
+        *) echo "Escolha inválida. Por favor, selecione um número entre 1 e 7." ;;
+    esac
+}
+
+
+
+function gnome_dark() {
+    sudo apt update -y
+    sudo apt install -y gnome-tweaks gnome-shell-extensions papirus-icon-theme
+
+    gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
+    gsettings set org.gnome.desktop.interface icon-theme "Papirus"
+    gsettings set org.gnome.desktop.interface cursor-theme "Adwaita"
+
+    echo "Tema GNOME Dark aplicado com sucesso!"
+}
+
+
+
+function gnome_light() {
+    sudo apt update -y
+    sudo apt install -y gnome-tweaks gnome-shell-extensions papirus-icon-theme
+
+    gsettings set org.gnome.desktop.interface gtk-theme "Adwaita"
+    gsettings set org.gnome.desktop.interface icon-theme "Papirus"
+    gsettings set org.gnome.desktop.interface cursor-theme "Adwaita"
+    
+    echo "Tema GNOME Light aplicado com sucesso!"
+}
+
+
+
+function macOS() {
+    sudo apt update -y
+    sudo apt install -y gnome-tweaks gnome-shell-extensions
+
+    mkdir -p ~/.themes
+    cd ~/.themes
+    git clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git WhiteSur
+    cd WhiteSur
+    ./install.sh
+
+    mkdir -p ~/.icons
+    cd ~/.icons
+    git clone https://github.com/vinceliuice/WhiteSur-icon-theme.git WhiteSur
+
+    gsettings set org.gnome.desktop.interface gtk-theme "WhiteSur"
+    gsettings set org.gnome.desktop.interface icon-theme "WhiteSur"
+    gsettings set org.gnome.desktop.interface cursor-theme "WhiteSur"
+
+    echo "Tema estilo macOS aplicado com sucesso!"
+}
+
+
+
+function windows() {
+    sudo apt update -y
+    sudo apt install -y gnome-tweaks gnome-shell-extensions
+
+    mkdir -p ~/.themes
+    cd ~/.themes
+    git clone https://github.com/B00merang-Project/Windows-10 Windows10
+
+    mkdir -p ~/.icons
+    cd ~/.icons
+    git clone https://github.com/B00merang-Project/Windows-10-Icons.git Windows10
+
+    gsettings set org.gnome.desktop.interface gtk-theme "Windows10"
+    gsettings set org.gnome.desktop.interface icon-theme "Windows10"
+    gsettings set org.gnome.desktop.interface cursor-theme "Windows10"
+
+    echo "Tema estilo Windows aplicado com sucesso!"
+}
+
+
+
+function retro() {
+    sudo apt update -y
+    sudo apt install -y gnome-tweaks gnome-shell-extensions numix-icon-theme
+
+    mkdir -p ~/.themes
+    cd ~/.themes
+    git clone https://github.com/adapta-project/adapta-gtk-theme.git Adapta
+    cd Adapta
+    ./autogen.sh --prefix=/usr
+    sudo make install
+
+    gsettings set org.gnome.desktop.interface gtk-theme "Adapta"
+    gsettings set org.gnome.desktop.interface icon-theme "Numix"
+    gsettings set org.gnome.desktop.interface cursor-theme "Adwaita"
+
+    echo "Tema estilo Retro aplicado com sucesso!"
+}
+
+
+
+function list_packages() {
+    clear
+
+    echo "Pacotes utilizados para cada estilo:"
+    echo
+    echo "1. GNOME Dark & Light:"
+    echo "   - gnome-tweaks: Permite ajustar configurações do GNOME."
+    echo "   - gnome-shell-extensions: Adiciona funcionalidades adicionais ao GNOME Shell."
+    echo "   - papirus-icon-theme: Fornece um conjunto de ícones moderno."
+    echo
+    echo "2. Estilo macOS:"
+    echo "   - gnome-tweaks: Permite ajustar configurações do GNOME."
+    echo "   - gnome-shell-extensions: Adiciona funcionalidades adicionais ao GNOME Shell."
+    echo "   - WhiteSur-gtk-theme: Um tema GTK semelhante ao macOS."
+    echo "   - WhiteSur-icon-theme: Um tema de ícones semelhante ao macOS."
+    echo
+    echo "3. Estilo Windows:"
+    echo "   - gnome-tweaks: Permite ajustar configurações do GNOME."
+    echo "   - gnome-shell-extensions: Adiciona funcionalidades adicionais ao GNOME Shell."
+    echo "   - Windows-10: Um tema GTK semelhante ao Windows 10."
+    echo "   - Windows-10-Icons: Um tema de ícones semelhante ao Windows 10."
+    echo
+    echo "4. Estilo Retro:"
+    echo "   - gnome-tweaks: Permite ajustar configurações do GNOME."
+    echo "   - gnome-shell-extensions: Adiciona funcionalidades adicionais ao GNOME Shell."
+    echo "   - numix-icon-theme: Fornece um conjunto de ícones moderno."
+    echo "   - Adapta-gtk-theme: Um tema inspirado na estética retro."
+
+    echo "Pressione 'q' para continuar..."
+ 
+    while true; do
+        read -rsn1 input
+        
+        if [[ $input == 'q' ]]; then
+            break
+        fi
+    done
+
+    choose_graphical_interface_en
+}

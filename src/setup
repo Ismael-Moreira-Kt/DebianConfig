@@ -3,6 +3,7 @@
 
 
 source "src/core/en/gui"
+source "src/core/pt/gui"
 
 
 
@@ -88,7 +89,7 @@ function setup_pt() {
         show_menu "${options[@]}"
         
         case "$SELECTED_OPTION" in 
-            0) echo "Configurar a Interface Gráfica" ;;
+            0) choose_graphical_interface_pt ;;
             1) echo "Configurar o Som e o Áudio" ;;
             2) echo "Configurar a Rede" ;;
             3) echo "Configurar o Sistema e Hardware" ;;
