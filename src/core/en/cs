@@ -158,3 +158,17 @@ function detect_and_install_video_drivers() {
 
     echo "Video drivers installed based on detected GPU."
 }
+
+
+
+function optimize_cpu_performance() {
+    echo "Optimizing CPU performance..."
+
+    sudo apt install -y cpufrequtils
+
+    echo "GOVERNOR='performance'" | sudo tee /etc/default/cpufrequtils > /dev/null
+ 
+    sudo systemctl restart cpufrequtils
+
+    echo "CPU performance optimization applied."
+}
