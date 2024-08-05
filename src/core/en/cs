@@ -201,3 +201,43 @@ function configure_ram_and_ssd() {
 
     echo "RAM and SSD settings configured."
 }
+
+
+
+function show_system_info() {
+    echo "Showing system information..."
+
+    echo "System Details:"
+    
+    uname -a
+
+    echo
+    echo "Memory Usage:"
+    
+    free -h
+
+    echo
+    echo "Disk Usage:"
+    
+    df -h
+
+    echo
+    echo "CPU Information:"
+    
+    lscpu
+
+    echo
+    echo "GPU Information:"
+    
+    lspci | grep -i vga
+
+    echo
+
+    while true; do
+        read -rsn1 input
+        
+        if [[ $input == 'q' ]]; then
+            break
+        fi
+    done
+}
