@@ -101,3 +101,23 @@ function windows() {
 
     echo "Windows style theme applied successfully!"
 }
+
+
+
+function retro() {
+    sudo apt update -y
+    sudo apt install -y gnome-tweaks gnome-shell-extensions numix-icon-theme
+
+    mkdir -p ~/.themes
+    cd ~/.themes
+    git clone https://github.com/adapta-project/adapta-gtk-theme.git Adapta
+    cd Adapta
+    ./autogen.sh --prefix=/usr
+    sudo make install
+
+    gsettings set org.gnome.desktop.interface gtk-theme "Adapta"
+    gsettings set org.gnome.desktop.interface icon-theme "Numix"
+    gsettings set org.gnome.desktop.interface cursor-theme "Adwaita"
+
+    echo "Retro style theme applied successfully!"
+}
