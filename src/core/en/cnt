@@ -193,3 +193,14 @@ function show_network_status() {
         fi
     done
 }
+
+
+
+function restart_network_services() {
+    echo "Restarting network services..."
+
+    sudo systemctl restart networking
+    sudo systemctl restart NetworkManager
+
+    echo "Network services restarted."
+}
