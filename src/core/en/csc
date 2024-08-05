@@ -37,3 +37,13 @@ function choose_sound_configuration_en() {
         esac
     done
 }
+
+
+
+function adjust_volume() {
+    echo "Adjust volume..."
+    
+    amixer -D pulse sset Master 80%
+    
+    echo "Volume adjusted successfully!"
+}
