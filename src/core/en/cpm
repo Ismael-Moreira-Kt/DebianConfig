@@ -1,0 +1,35 @@
+#!/bin/bash
+
+
+
+function configure_package_management_en() {
+    local CHOICE=-1
+
+    while true; do
+        clear
+
+        echo "Choose an option to configure package management:"
+        echo "1. Configure APT Preferences"
+        echo "2. Set Up Aptitude"
+        echo "3. Configure Package Caching"
+        echo "4. Manage APT Repositories"
+        echo "5. Configure Automatic Upgrades"
+        echo "6. Install Package Management Tools"
+        echo "7. Show Package Management Configuration"
+        echo "8. Return to Main Menu"
+
+        read -p "Your choice (1-8): " CHOICE
+
+        case $CHOICE in
+            1) configure_apt_preferences ;;
+            2) set_up_aptitude ;;
+            3) configure_package_caching ;;
+            4) manage_apt_repositories ;;
+            5) configure_automatic_upgrades ;;
+            6) install_package_management_tools ;;
+            7) show_package_management_configuration ;;
+            8) break ;;
+            *) echo "Invalid option. Please try again." ;;
+        esac
+    done
+}

@@ -10,6 +10,8 @@ source "src/core/en/cnt"
 source "src/core/pt/cnt"
 source "src/core/en/cs"
 source "src/core/pt/cs"
+source "src/core/en/cpm"
+source "src/core/pt/cpm"
 
 
 
@@ -99,7 +101,7 @@ function setup_pt() {
             1) choose_sound_configuration_pt ;;
             2) configure_network_pt ;;
             3) configure_system_pt ;;
-            4) echo "Configurar os Pacotes" ;;
+            4) configure_package_management_pt ;;
             5) echo "Configurar Sistemas de Segurança" ;;
             6) echo "Configurar Backup" ;;
             7) echo "Configurar tudo Automaticamente" ;;
@@ -142,7 +144,7 @@ function setup_en() {
             1) choose_sound_configuration_en ;;
             2) configure_network_en ;;
             3) configure_system_en ;;
-            4) echo "Configuring Packages" ;;
+            4) configure_package_management_en ;;
             5) echo "Configuring Security Systems" ;;
             6) echo "Configure Backup" ;;
             7) echo "Configure everything Automatically" ;;
