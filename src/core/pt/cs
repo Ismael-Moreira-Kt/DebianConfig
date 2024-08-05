@@ -1,0 +1,316 @@
+#!/bin/bash
+
+
+
+function configure_system_pt() {
+    local CHOICE=-1
+
+    while true; do
+        clear
+
+        echo "Escolha uma opção para configurar o sistema e o hardware:"
+        echo "1. Configurar o Fuso Horário"
+        echo "2. Configurar o Nome do Host"
+        echo "3. Configurar Idioma e Layout do Teclado"
+        echo "4. Instalar e Configurar Software Essencial"
+        echo "5. Detectar e Instalar Drivers de Vídeo"
+        echo "6. Otimizar o Desempenho da CPU"
+        echo "7. Configurar RAM e Configurações de SSD"
+        echo "8. Instalar Software de Impressora e Scanner"
+        echo "9. Configurar Configurações de Energia"
+        echo "10. Configurar Segurança do Sistema"
+        echo "11. Atualizar o Firmware"
+        echo "12. Configurar Backup"
+        echo "13. Gerenciar Drivers de Dispositivos"
+        echo "14. Otimizar Arquivos Temporários e Cache"
+        echo "15. Instalar Ferramentas de Diagnóstico"
+        echo "16. Mostrar Informações do Sistema"
+        echo "17. Voltar ao Menu Principal"
+
+        read -p "Sua escolha (1-17): " CHOICE
+
+        case $CHOICE in
+            1) set_timezone ;;
+            2) configure_hostname ;;
+            3) set_language_and_keyboard ;;
+            4) install_and_configure_software ;;
+            5) detect_and_install_video_drivers ;;
+            6) optimize_cpu_performance ;;
+            7) configure_ram_and_ssd ;;
+            8) install_printer_scanner_software ;;
+            9) configure_power_settings ;;
+            10) configure_security ;;
+            11) update_firmware ;;
+            12) configure_backup ;;
+            13) manage_device_drivers ;;
+            14) optimize_temp_files ;;
+            15) install_diagnostic_tools ;;
+            16) show_system_info ;;
+            17) break ;;
+            *) echo "Opção inválida. Tente novamente." ;;
+        esac
+    done
+}
+
+
+
+function set_timezone() {
+    while true; do
+        echo "Configurando o fuso horário do sistema..."
+        read -p "Digite o fuso horário (por exemplo, America/Sao_Paulo): " TIMEZONE
+        
+        if timedatectl list-timezones | grep -q "^$TIMEZONE$"; then
+            sudo timedatectl set-timezone "$TIMEZONE"
+            echo "Fuso horário definido para $TIMEZONE."
+        
+            break
+        else
+            echo "Fuso horário inválido. Tente novamente."
+        fi
+    done
+}
+
+
+
+function configure_hostname() {
+    while true; do
+        echo "Configurando o nome do host do sistema..."
+        read -p "Digite o novo nome do host: " HOSTNAME
+        
+        if [[ "$HOSTNAME" =~ ^[a-zA-Z0-9_-]+$ ]]; then
+            sudo hostnamectl set-hostname "$HOSTNAME"
+            sudo sed -i "s/127.0.1.1.*/127.0.1.1 $HOSTNAME/" /etc/hosts
+        
+            echo "Nome do host definido como $HOSTNAME."
+        
+            break
+        else
+            echo "Nome do host inválido. Apenas caracteres alfanuméricos, hífens e sublinhados são permitidos."
+        fi
+    done
+}
+
+
+
+function set_language_and_keyboard() {
+    while true; do
+        echo "Configurando o idioma do sistema e o layout do teclado..."
+        read -p "Digite o locale do sistema (por exemplo, pt_BR.UTF-8): " LOCALE
+        
+        if locale -a | grep -q "^$LOCALE\$"; then
+            sudo update-locale LANG="$LOCALE"
+        
+            break
+        else
+            echo "Locale inválido. Tente novamente."
+        fi
+    done
+
+    while true; do
+        read -p "Digite o layout do teclado (por exemplo, br): " KEYBOARD_LAYOUT
+        
+        if localectl list-keymaps | grep -q "^$KEYBOARD_LAYOUT$"; then
+            sudo localectl set-keymap "$KEYBOARD_LAYOUT"
+        
+            echo "Idioma do sistema definido para $LOCALE e layout do teclado definido como $KEYBOARD_LAYOUT."
+        
+            break
+        else
+            echo "Layout do teclado inválido. Tente novamente."
+        fi
+    done
+}
+
+
+
+function install_and_configure_software() {
+    echo "Instalando e configurando software essencial..."
+    
+    sudo apt update -y
+    sudo apt install -y curl git vim htop build-essential preload
+
+    echo "Software essencial instalado com sucesso."
+}
+
+
+
+function detect_and_install_video_drivers() {
+    echo "Detectando e instalando drivers de vídeo..."
+
+    GPU_MODEL=$(lspci | grep -i vga | awk -F: '{print $3}')
+
+    echo "GPU detectada: $GPU_MODEL"
+
+    case $GPU_MODEL in
+        *NVIDIA*)
+            sudo apt install -y nvidia-driver
+            ;;
+        *AMD*)
+            sudo apt install -y firmware-amd-graphics
+            ;;
+        *Intel*)
+            echo "GPU Intel detectada. Nenhum driver proprietário necessário."
+            ;;
+        *)
+            echo "GPU desconhecida. Instale os drivers manualmente."
+            ;;
+    esac
+
+    echo "Drivers de vídeo instalados com base na GPU detectada."
+}
+
+
+
+function optimize_cpu_performance() {
+    echo "Otimizar o desempenho da CPU..."
+
+    sudo apt install -y cpufrequtils
+
+    echo "GOVERNOR='performance'" | sudo tee /etc/default/cpufrequtils > /dev/null
+    sudo systemctl restart cpufrequtils
+
+    echo "Otimização de desempenho da CPU aplicada."
+}
+
+
+
+function configure_ram_and_ssd() {
+    echo "Configurando RAM e configurações de SSD..."
+
+    sudo apt install -y preload
+
+    echo "Configurando arquivo de swap..."
+    
+    SWAPFILE="/swapfile"
+    
+    sudo fallocate -l 2G "$SWAPFILE"
+    sudo chmod 600 "$SWAPFILE"
+    sudo mkswap "$SWAPFILE"
+    sudo swapon "$SWAPFILE"
+    
+    echo "$SWAPFILE none swap sw 0 0" | sudo tee -a /etc/fstab > /dev/null
+
+    if grep -q "discard" /etc/fstab; then
+        echo "TRIM já está habilitado."
+    else
+        echo "Habilitando TRIM para SSD..."
+    
+        sudo sed -i 's/\(.*\)\s\([^#]\)/\1 discard \2/' /etc/fstab
+    fi
+
+    echo "Configurações de RAM e SSD configuradas."
+}
+
+
+
+function show_system_info() {
+    echo "Mostrando informações do sistema..."
+
+    echo "Detalhes do Sistema:"
+    uname -a
+
+    echo
+    echo "Uso de Memória:"
+    free -h
+
+    echo
+    echo "Uso de Disco:"
+    df -h
+
+    echo
+    echo "Informações da CPU:"
+    lscpu
+
+    echo
+    echo "Informações da GPU:"
+    lspci | grep -i vga
+
+    echo
+
+    while true; do
+        read -rsn1 input
+        
+        if [[ $input == 'q' ]]; then
+            break
+        fi
+    done
+}
+
+
+
+function install_printer_scanner_software() {
+    echo "Instalando software de impressora e scanner..."
+
+    sudo apt install -y cups hplip sane
+
+    echo "Software de impressora e scanner instalado."
+}
+
+
+
+function configure_power_settings() {
+    echo "Configurando configurações de energia..."
+
+    sudo apt install -y tlp
+    sudo systemctl enable tlp
+    sudo systemctl start tlp
+
+    echo "Configurações de energia configuradas com TLP."
+}
+
+
+
+function configure_security() {
+    echo "Configurando segurança do sistema..."
+
+    sudo apt install -y ufw fail2ban
+    sudo ufw enable
+    sudo ufw default deny incoming
+    sudo ufw default allow outgoing
+
+    echo "Configuração de segurança concluída com UFW e Fail2Ban."
+}
+
+
+
+function update_firmware() {
+    echo "Atualizando o firmware do sistema..."
+
+    sudo apt install -y fwupd
+    sudo fwupdmgr update
+
+    echo "Firmware do sistema atualizado."
+}
+
+
+
+function manage_device_drivers() {
+    echo "Gerenciando drivers de dispositivos adicionais..."
+
+    sudo apt install -y linux-firmware
+
+    echo "Drivers de dispositivos adicionais gerenciados."
+}
+
+
+
+function optimize_temp_files() {
+    echo "Otimização de arquivos temporários e cache..."
+
+    sudo apt install -y bleachbit
+    sudo bleachbit --clean system.*
+    sudo bleachbit --wipe
+
+    echo "Arquivos temporários e cache otimizados."
+}
+
+
+
+function install_diagnostic_tools() {
+    echo "Instalando ferramentas de diagnóstico..."
+
+    sudo apt install -y smartmontools lm-sensors
+    sudo sensors-detect --auto
+
+    echo "Ferramentas de diagnóstico instaladas e sensores detectados."
+}
