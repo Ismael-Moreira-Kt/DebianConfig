@@ -31,6 +31,8 @@ function show_language_menu() {
 
 
 function main() {
+    check_sudo
+
     until [[ $CHOICE -ge 1 && $CHOICE -le 2 ]]; do
         show_language_menu
         read -p "Your choice: " CHOICE
