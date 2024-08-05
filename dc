@@ -23,3 +23,10 @@ function show_language_menu() {
     echo "1. Português"
     echo "2. English"
 }
+
+
+
+until [[ $choice -ge 0 && $choice -le 2 ]]; do
+    show_language_menu
+    read -p "Your choice: " choice
+done
