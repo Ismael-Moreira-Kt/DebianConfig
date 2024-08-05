@@ -5,7 +5,7 @@
 function choose_graphical_interface_en() {
     CHOICE=-1
 
-    until [[ $CHOICE -ge 1 && $CHOICE -le 6 ]]; do
+    until [[ $CHOICE -ge 1 && $CHOICE -le 8 ]]; do
         clear 
 
         echo "Choose your graphical interface style:"
