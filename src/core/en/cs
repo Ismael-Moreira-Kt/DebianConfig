@@ -309,3 +309,14 @@ function optimize_temp_files() {
 
     echo "Temporary files and cache optimized."
 }
+
+
+
+function install_diagnostic_tools() {
+    echo "Installing diagnostic tools..."
+
+    sudo apt install -y smartmontools lm-sensors
+    sudo sensors-detect --auto
+
+    echo "Diagnostic tools installed and sensors detected."
+}
