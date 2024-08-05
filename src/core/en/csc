@@ -89,3 +89,16 @@ function set_output_device() {
     
     echo "Output device set to $default_output."
 }
+
+
+
+function configure_audio_profile() {
+    echo "Configuring the default audio profile..."
+    
+    default_card=$(pactl list cards short | awk '{print $1}' | head -n 1)
+    default_profile=$(pactl list cards | grep -A 20 "Card #$default_card" | grep 'output:' | awk '{print $1}' | head -n 1)
+    
+    pactl set-card-profile "$default_card" "$default_profile"
+    
+    echo "Audio profile $default_profile configured for sound card $default_card."
+}
