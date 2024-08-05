@@ -85,3 +85,13 @@ function configure_automatic_upgrades() {
 
     echo "Automatic upgrades configured."
 }
+
+
+
+function install_package_management_tools() {
+    echo "Installing package management tools..."
+
+    sudo apt install -y apt-listchanges debconf-utils
+
+    echo "Package management tools installed."
+}
