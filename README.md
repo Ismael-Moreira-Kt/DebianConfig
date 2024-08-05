@@ -1,6 +1,8 @@
 # DebianConfig
 DebianConf is a set of scripts for easily configuring various aspects of Debian, including the graphical interface, sound, network, system and hardware, packages, security and backup. This script is ideal for users who want to quickly configure a Debian environment according to their preferences.
 
+[Leia o README em português, clique aqui.](./README_PT.md)
+
 <br><br>
 
 ## Prerequisites
