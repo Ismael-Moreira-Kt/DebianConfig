@@ -107,3 +107,47 @@ function setup_pt() {
         esac
     done 
 }
+
+
+
+function setup_en() {
+    local options=(
+        "Configuring the Graphical Interface"
+        "Configuring Sound and Audio"
+        "Setting up the network"
+        "Configuring the System and Hardware"
+        "Configuring Packages"
+        "Configuring Security Systems"
+        "Configure Backup"
+        "Configure everything Automatically"
+        "Exit"
+    )
+
+    while true; do
+        show_menu "${options[@]}"
+        
+        case "$SELECTED_OPTION" in 
+            0) echo "Configuring the Graphical Interface" ;;
+            1) echo "Configuring Sound and Audio" ;;
+            2) echo "Setting up the network" ;;
+            3) echo "Configuring the System and Hardware" ;;
+            4) echo "Configuring Packages" ;;
+            5) echo "Configuring Security Systems" ;;
+            6) echo "Configure Backup" ;;
+            7) echo "Configure everything Automatically" ;;
+            8) 
+                clear
+                echo -e "${RED}"
+                
+                printf " ____              \n"
+                printf "| __ ) _   _  ___  \n"
+                printf "|  _ \| | | |/ _ \ \n"
+                printf "| |_) | |_| |  __/ \n"
+                printf "|____/ \__, |\___| \n"
+                printf "       |___/       \n"
+                
+                exit 0 ;;
+            *) echo "Invalid option. Please try again." ;;
+        esac
+    done 
+}
