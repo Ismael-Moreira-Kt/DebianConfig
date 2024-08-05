@@ -165,6 +165,14 @@ function show_audio_info() {
     
     echo
     echo "Diagnostics completed. Check the above results for possible problems."
+
+    while true; do
+        read -rsn1 input
+        
+        if [[ $input == 'q' ]]; then
+            break
+        fi
+    done
 }
 
 

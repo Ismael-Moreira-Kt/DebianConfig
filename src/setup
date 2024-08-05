@@ -2,10 +2,11 @@
 
 
 
-source "src/core/en/csc"
 source "src/core/en/gui"
 source "src/core/pt/gui"
+source "src/core/en/csc"
 source "src/core/pt/csc"
+source "src/core/en/cnt"
 
 
 
@@ -136,7 +137,7 @@ function setup_en() {
         case "$SELECTED_OPTION" in 
             0) choose_graphical_interface_en ;;
             1) choose_sound_configuration_en ;;
-            2) echo "Setting up the network" ;;
+            2) configure_network_en ;;
             3) echo "Configuring the System and Hardware" ;;
             4) echo "Configuring Packages" ;;
             5) echo "Configuring Security Systems" ;;

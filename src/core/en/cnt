@@ -1,0 +1,33 @@
+#!/bin/bash
+
+
+
+function configure_network_en() {
+    local CHOICE=-1
+
+    while true; do
+        clear
+
+        echo "Choose an option to configure the network:"
+        echo "1. Configure Network Interface"
+        echo "2. Set Static IP Address"
+        echo "3. Enable DHCP"
+        echo "4. Configure DNS Servers"
+        echo "5. Show Network Status"
+        echo "6. Restart Network Services"
+        echo "7. Return to Main Menu"
+
+        read -p "Your choice (1-7): " CHOICE
+
+        case $CHOICE in
+            1) configure_network_interface ;;
+            2) set_static_ip ;;
+            3) enable_dhcp ;;
+            4) configure_dns ;;
+            5) show_network_status ;;
+            6) restart_network_services ;;
+            7) break ;;
+            *) echo "Invalid option. Please try again." ;;
+        esac
+    done
+}
