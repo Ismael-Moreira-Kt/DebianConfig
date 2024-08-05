@@ -47,3 +47,13 @@ function adjust_volume() {
     
     echo "Volume adjusted successfully!"
 }
+
+
+
+function adjust_balance() {
+    echo "Adjust audio balance..."
+
+    amixer -D pulse sset Master 50%,50%
+    
+    echo "Audio balance adjusted successfully!"
+}
