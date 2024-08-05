@@ -1,0 +1,39 @@
+#!/bin/bash
+
+
+
+function choose_sound_configuration_en() {
+    local CHOICE=-1
+
+    while true; do
+        clear
+
+        echo "Choose an option to configure sound and audio:"
+        echo "1. Adjust volume"
+        echo "2. Adjust audio balance"
+        echo "3. Set input device"
+        echo "4. Set output device"
+        echo "5. Configure audio profile"
+        echo "6. Install audio tools"
+        echo "7. Show audio system information"
+        echo "8. Audio system diagnostics"
+        echo "9. List Packages"
+        echo "10. Return to main menu"
+
+        read -p "Your choice (1-10): " CHOICE
+
+        case $CHOICE in
+            1) adjust_volume ;;
+            2) adjust_balance ;;
+            3) set_input_device ;;
+            4) set_output_device ;;
+            5) configure_audio_profile ;;
+            6) install_audio_tools ;;
+            7) show_audio_info ;;
+            8) diagnose_audio_system ;;
+            9) describe_audio_packages ;;
+            10) break ;;
+            *) echo "Invalid option. Please try again." ;;
+        esac
+    done
+}
