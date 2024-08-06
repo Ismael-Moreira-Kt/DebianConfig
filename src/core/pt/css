@@ -1,0 +1,436 @@
+#!/bin/bash
+
+
+
+function configure_security_systems_pt() {
+    local CHOICE=-1
+
+    while true; do
+        clear
+
+        echo "Escolha uma opção para configurar a segurança:"
+        echo "1. Configurar Firewall com UFW"
+        echo "2. Endurecer Configuração SSH"
+        echo "3. Instalar e Configurar Fail2Ban"
+        echo "4. Configurar Atualizações Automáticas de Segurança"
+        echo "5. Instalar e Configurar AppArmor/SELinux"
+        echo "6. Configurar Auditd para Auditoria do Sistema"
+        echo "7. Configurar Monitoramento de Logs"
+        echo "8. Configurar Criptografia de Disco"
+        echo "9. Aplicar Configurações de Segurança do Kernel"
+        echo "10. Configurar Limitação de Taxa SSH"
+        echo "11. Configurar NTP"
+        echo "12. Instalar e Configurar ClamAV"
+        echo "13. Bloquear Portas Não Utilizadas"
+        echo "14. Instalar e Configurar rkhunter"
+        echo "15. Configurar Autenticação de Dois Fatores (2FA) para SSH"
+        echo "16. Configurar fail2ban para Serviços"
+        echo "17. Instalar e Configurar Sistema de Detecção/Prevenção de Intrusão"
+        echo "18. Implementar Política de Senhas"
+        echo "19. Instalar e Configurar AIDE"
+        echo "20. Mostrar Configuração de Segurança"
+        echo "21. Voltar ao Menu Principal"
+
+        read -p "Sua escolha (1-21): " CHOICE
+
+        case $CHOICE in
+            1) configure_firewall ;;
+            2) harden_ssh ;;
+            3) install_configure_fail2ban ;;
+            4) configure_security_updates ;;
+            5) install_configure_apparmor_selinux ;;
+            6) configure_auditd ;;
+            7) setup_log_monitoring ;;
+            8) configure_disk_encryption ;;
+            9) apply_kernel_security ;;
+            10) configure_ssh_rate_limiting ;;
+            11) configure_ntp ;;
+            12) install_configure_clamav ;;
+            13) block_unused_ports ;;
+            14) install_configure_rkhunter ;;
+            15) configure_ssh_2fa ;;
+            16) configure_fail2ban_for_services ;;
+            17) install_configure_ids_ips ;;
+            18) enforce_password_policy ;;
+            19) install_configure_aide ;;
+            20) show_security_configuration ;;
+            21) break ;;
+            *) echo "Opção inválida. Tente novamente." ;;
+        esac
+    done
+}
+
+
+
+function configure_firewall() {
+    echo "Configurando Firewall com UFW..."
+
+    sudo apt install -y ufw
+    sudo ufw default deny incoming
+    sudo ufw default allow outgoing
+
+    while true; do
+        read -p "Deseja permitir conexões SSH (s/n)? " ALLOW_SSH
+        case $ALLOW_SSH in
+            [Ss]* ) sudo ufw allow ssh; echo "SSH permitido."; break ;;
+            [Nn]* ) echo "SSH não permitido."; break ;;
+            * ) echo "Responda com sim ou não." ;;
+        esac
+    done
+
+    sudo ufw enable
+
+    echo "Firewall configurado e habilitado."
+}
+
+
+
+function harden_ssh() {
+    echo "Endurecendo Configuração SSH..."
+
+    sudo sed -i 's/#Port 22/Port 22/' /etc/ssh/sshd_config
+    sudo sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config
+    sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+    sudo sed -i 's/#PermitEmptyPasswords no/PermitEmptyPasswords no/' /etc/ssh/sshd_config
+    sudo sed -i 's/#ChallengeResponseAuthentication no/ChallengeResponseAuthentication no/' /etc/ssh/sshd_config
+    sudo sed -i 's/#UsePAM yes/UsePAM yes/' /etc/ssh/sshd_config
+
+    echo "Permitindo apenas autenticação por chave..."
+    sudo sed -i 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/' /etc/ssh/sshd_config
+
+    sudo systemctl restart sshd
+
+    echo "Configuração SSH endurecida."
+}
+
+
+
+function install_configure_fail2ban() {
+    echo "Instalando e Configurando Fail2Ban..."
+
+    sudo apt install -y fail2ban
+
+    sudo systemctl enable fail2ban
+    sudo systemctl start fail2ban
+
+    echo "Fail2Ban instalado e configurado com configurações padrão."
+}
+
+
+
+function configure_security_updates() {
+    echo "Configurando Atualizações Automáticas de Segurança..."
+
+    sudo apt install -y unattended-upgrades
+
+    sudo dpkg-reconfigure --priority=low unattended-upgrades
+
+    echo "Atualizações automáticas de segurança configuradas."
+}
+
+
+
+function install_configure_apparmor_selinux() {
+    echo "Instalando e Configurando AppArmor/SELinux..."
+
+    while true; do
+        read -p "Qual módulo de segurança você deseja configurar? (1 para AppArmor, 2 para SELinux): " SEC_MODULE
+        case $SEC_MODULE in
+            1)
+                sudo apt install -y apparmor apparmor-utils
+                sudo systemctl enable apparmor
+                sudo systemctl start apparmor
+                echo "AppArmor instalado e ativado."
+                break
+                ;;
+            2)
+                sudo apt install -y selinux-basics selinux-utils selinux-policy-default auditd
+                sudo selinux-activate
+                sudo selinux-config-enforcing
+                echo "SELinux instalado e configurado no modo de aplicação."
+                break
+                ;;
+            *)
+                echo "Opção inválida. Escolha 1 para AppArmor ou 2 para SELinux."
+                ;;
+        esac
+    done
+}
+
+
+
+function configure_auditd() {
+    echo "Configurando Auditd para Auditoria do Sistema..."
+
+    sudo apt install -y auditd audispd-plugins
+
+    sudo systemctl enable auditd
+    sudo systemctl start auditd
+
+    echo "Auditd instalado e ativado."
+}
+
+
+
+function setup_log_monitoring() {
+    echo "Configurando Monitoramento de Logs..."
+
+    sudo apt install -y logwatch
+
+    sudo logwatch --detail High --mailto root --range All --service All
+
+    echo "Monitoramento de logs configurado com Logwatch."
+}
+
+
+
+function configure_disk_encryption() {
+    echo "Configurando Criptografia de Disco..."
+
+    sudo apt install -y cryptsetup
+
+    echo "Ferramentas de criptografia de disco instaladas. Configuração manual necessária para criptografia."
+
+    while true; do
+        read -rsn1 input
+    
+        if [[ $input == 'q' ]]; then
+            break
+        fi
+    done
+}
+
+
+
+function apply_kernel_security() {
+    echo "Aplicando Configurações de Segurança do Kernel..."
+    echo "Aplicando configurações de segurança do sysctl..."
+    
+    sudo tee -a /etc/sysctl.conf > /dev/null <<EOL
+# Desativar roteamento de fonte IP
+net.ipv4.conf.all.accept_source_route = 0
+net.ipv6.conf.all.accept_source_route = 0
+
+# Desativar encaminhamento de pacotes
+net.ipv4.ip_forward = 0
+net.ipv6.conf.all.forwarding = 0
+
+# Ativar proteção contra falsificação de IP
+net.ipv4.conf.all.rp_filter = 1
+
+# Ativar cookies SYN
+net.ipv4.tcp_syncookies = 1
+
+# Desativar redirecionamentos ICMP
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv6.conf.all.accept_redirects = 0
+
+# Desativar envio de redirecionamentos
+net.ipv4.conf.all.send_redirects = 0
+
+# Ativar ExecShield (se suportado)
+kernel.exec-shield = 1
+kernel.randomize_va_space = 2
+EOL
+
+    sudo sysctl -p
+
+    echo "Configurações de segurança do kernel aplicadas."
+}
+
+
+
+function show_security_configuration() {
+    echo "Mostrando configuração atual de segurança..."
+
+    echo "Status do UFW:"
+    sudo ufw status verbose
+
+    echo
+    echo "Configuração SSH:"
+    grep -E 'Port|PermitRootLogin|PasswordAuthentication|ChallengeResponseAuthentication|UsePAM' /etc/ssh/sshd_config
+
+    echo
+    echo "Status do Fail2Ban:"
+    sudo systemctl status fail2ban
+
+    echo
+    echo "Status do Auditd:"
+    sudo systemctl status auditd
+
+    echo
+    echo "Status do AppArmor:"
+    sudo apparmor_status || echo "AppArmor não configurado."
+
+    echo
+    echo "Status do SELinux:"
+    sudo sestatus || echo "SELinux não configurado."
+
+    echo
+    echo "Configurações de segurança do kernel:"
+    sysctl -a | grep -E 'accept_source_route|ip_forward|rp_filter|tcp_syncookies|accept_redirects|send_redirects|exec-shield|randomize_va_space'
+
+    while true; do
+        read -rsn1 input
+        if [[ $input == 'q' ]]; then
+            break
+        fi
+    done
+}
+
+
+
+function configure_ssh_rate_limiting() {
+    echo "Configurando limitação de taxa SSH..."
+
+    sudo tee /etc/ufw/applications.d/ufw-ssh-rate-limit > /dev/null <<EOL
+[OpenSSH]
+title=Servidor OpenSSH
+description=Servidor OpenSSH
+ports=22/tcp
+EOL
+
+    sudo ufw app update OpenSSH
+    sudo ufw limit OpenSSH
+
+    echo "Limitação de taxa SSH configurada."
+}
+
+
+
+function configure_ntp() {
+    echo "Configurando NTP para sincronização de tempo..."
+
+    sudo apt install -y ntp
+    sudo systemctl enable ntp
+    sudo systemctl start ntp
+
+    echo "NTP configurado e em execução."
+}
+
+
+
+function install_configure_clamav() {
+    echo "Instalando e Configurando ClamAV..."
+
+    sudo apt install -y clamav clamav-daemon
+    sudo freshclam
+    sudo systemctl enable clamav-daemon
+    sudo systemctl start clamav-daemon
+
+    echo "ClamAV instalado e configurado."
+}
+
+
+
+function block_unused_ports() {
+    echo "Bloqueando portas não utilizadas..."
+
+    PORTS=(23 25 110 143)
+
+    for PORT in "${PORTS[@]}"; do
+        sudo ufw deny $PORT
+    done
+
+    echo "Portas não utilizadas bloqueadas."
+}
+
+
+
+function install_configure_rkhunter() {
+    echo "Instalando e Configurando rkhunter..."
+
+    sudo apt install -y rkhunter
+    sudo rkhunter --update
+    sudo rkhunter --propupd
+
+    echo "rkhunter instalado e configurado. Execute 'rkhunter --check' para verificar."
+}
+
+
+
+function configure_ssh_2fa() {
+    echo "Configurando SSH com Autenticação de Dois Fatores..."
+
+    sudo apt install -y libpam-google-authenticator
+    sudo sed -i '/@include common-auth/a auth required pam_google_authenticator.so' /etc/pam.d/sshd
+    sudo sed -i 's/ChallengeResponseAuthentication no/ChallengeResponseAuthentication yes/' /etc/ssh/sshd_config
+    sudo systemctl restart sshd
+
+    echo "2FA para SSH configurado. Cada usuário precisa configurar seu Google Authenticator."
+        
+    while true; do
+        read -rsn1 input
+        if [[ $input == 'q' ]]; then
+            break
+        fi
+    done
+}
+
+
+
+function configure_fail2ban_for_services() {
+    echo "Configurando Fail2Ban para serviços adicionais..."
+
+    local SERVICES=("apache-auth" "nginx-http-auth" "postfix" "dovecot")
+
+    for SERVICE in "${SERVICES[@]}"; do
+        sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+        sudo sed -i "s/\[$SERVICE\]/\[$SERVICE\]\nenabled = true/" /etc/fail2ban/jail.local
+    done
+
+    sudo systemctl restart fail2ban
+
+    echo "Fail2Ban configurado para serviços adicionais."
+}
+
+
+
+function install_configure_ids_ips() {
+    echo "Instalando e Configurando Snort IDS/IPS..."
+
+    sudo apt install -y snort
+
+    echo "Snort instalado. Configuração manual é necessária para personalizar as regras de IDS/IPS."
+
+    while true; do
+        read -rsn1 input
+        if [[ $input == 'q' ]]; then
+            break
+        fi
+    done
+}
+
+
+
+function enforce_password_policy() {
+    echo "Implementando política de senha forte..."
+
+    sudo apt install -y libpam-pwquality
+    sudo sed -i '/pam_pwquality.so/ s/retry=3/retry=3 minlen=12 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1/' /etc/pam.d/common-password
+
+    echo "Política de senha forte implementada."
+}
+
+
+
+function install_configure_aide() {
+    echo "Instalando e Configurando AIDE..."
+
+    sudo apt install -y aide
+    sudo aideinit
+    sudo mv /var/lib/aide/aide.db.new /var/lib/aide/aide.db
+
+    echo "AIDE instalado e inicializado. Execute 'aide --check' para verificar a integridade dos arquivos."
+}
+
+
+
+function configure_logrotate() {
+    echo "Configurando rotação de logs..."
+
+    sudo apt install -y logrotate
+    sudo logrotate -f /etc/logrotate.conf
+
+    echo "Rotação de logs configurada."
+}

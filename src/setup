@@ -104,7 +104,7 @@ function setup_pt() {
             2) configure_network_pt ;;
             3) configure_system_pt ;;
             4) configure_package_management_pt ;;
-            5) echo "Configurar Sistemas de Segurança" ;;
+            5) configure_security_systems_pt ;;
             6) echo "Configurar Backup" ;;
             7) echo "Configurar tudo Automaticamente" ;;
             8) 
