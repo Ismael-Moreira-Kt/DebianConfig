@@ -260,3 +260,32 @@ function optimize_cpu_performance() {
 
     echo "CPU performance optimization applied."
 }
+
+
+
+function configure_ram_and_ssd() {
+    echo "Configuring RAM and SSD settings..."
+
+    sudo apt install -y preload
+
+    echo "Configuring swapfile..."
+    
+    SWAPFILE="/swapfile"
+    
+    sudo fallocate -l 2G "$SWAPFILE"
+    sudo chmod 600 "$SWAPFILE"
+    sudo mkswap "$SWAPFILE"
+    sudo swapon "$SWAPFILE"
+    
+    echo "$SWAPFILE none swap sw 0 0" | sudo tee -a /etc/fstab > /dev/null
+
+    if grep -q "discard" /etc/fstab; then
+        echo "TRIM is already enabled."
+    else
+        echo "Enabling TRIM for SSD..."
+    
+        sudo sed -i 's/\(.*\)\s\([^#]\)/\1 discard \2/' /etc/fstab
+    fi
+
+    echo "RAM and SSD settings configured."
+}
