@@ -220,3 +220,30 @@ function install_and_configure_software() {
 
     echo "Essential software successfully installed."
 }
+
+
+
+function detect_and_install_video_drivers() {
+    echo "Detecting and installing video drivers..."
+
+    GPU_MODEL=$(lspci | grep -i vga | awk -F: '{print $3}')
+
+    echo "GPU detected: $GPU_MODEL"
+
+    case $GPU_MODEL in
+        *NVIDIA*)
+            sudo apt install -y nvidia-driver
+            ;;
+        *AMD*)
+            sudo apt install -y firmware-amd-graphics
+            ;;
+        *Intel*)
+            echo "Intel GPU detected. No proprietary drivers required."
+            ;;
+        *)
+            echo "Unknown GPU. Install drivers manually."
+            ;;
+    esac
+
+    echo "Video drivers installed based on detected GPU."
+}
