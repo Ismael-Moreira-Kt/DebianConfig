@@ -334,3 +334,15 @@ function block_unused_ports() {
 
     echo "Unused ports blocked."
 }
+
+
+
+function install_configure_rkhunter() {
+    echo "Installing and Configuring rkhunter..."
+
+    sudo apt install -y rkhunter
+    sudo rkhunter --update
+    sudo rkhunter --propupd
+
+    echo "rkhunter installed and configured. Run 'rkhunter --check' to scan."
+}
