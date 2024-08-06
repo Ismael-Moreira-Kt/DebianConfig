@@ -529,3 +529,21 @@ EOL
 
     echo "Kernel security settings applied."
 }
+
+
+
+function configure_ssh_rate_limiting() {
+    echo "Configuring SSH rate limiting..."
+
+    sudo tee /etc/ufw/applications.d/ufw-ssh-rate-limit > /dev/null <<EOL
+[OpenSSH]
+title=OpenSSH Server
+description=OpenSSH Server
+ports=22/tcp
+EOL
+
+    sudo ufw app update OpenSSH
+    sudo ufw limit OpenSSH
+
+    echo "SSH rate limiting configured."
+}
