@@ -383,3 +383,20 @@ function configure_fail2ban_for_services() {
 
     echo "Fail2Ban configured for additional services."
 }
+
+
+
+function install_configure_ids_ips() {
+    echo "Installing and Configuring Snort IDS/IPS..."
+
+    sudo apt install -y snort
+
+    echo "Snort installed. Manual configuration is required to customize IDS/IPS rules."
+
+    while true; do
+        read -rsn1 input
+        if [[ $input == 'q' ]]; then
+            break
+        fi
+    done
+}
