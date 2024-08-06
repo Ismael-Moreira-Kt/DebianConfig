@@ -289,3 +289,15 @@ function configure_ram_and_ssd() {
 
     echo "RAM and SSD settings configured."
 }
+
+
+
+function configure_power_settings() {
+    echo "Configuring power settings..."
+
+    sudo apt install -y tlp
+    sudo systemctl enable tlp
+    sudo systemctl start tlp
+
+    echo "Power settings configured with TLP."
+}
