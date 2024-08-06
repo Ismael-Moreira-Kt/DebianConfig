@@ -381,3 +381,19 @@ function set_input_device() {
     
     echo "Input device set to $default_input."
 }
+
+
+
+function set_output_device() {
+    echo "Configuring the default output device..."
+    default_output=$(pactl list sinks short | grep -m 1 RUNNING | awk '{print $1}')
+    
+    if [ -z "$default_output" ]; then
+        echo "No active output devices found, using the first available one."
+        default_output=$(pactl list sinks short | awk '{print $1}' | head -n 1)
+    fi
+    
+    pactl set-default-sink "$default_output"
+    
+    echo "Output device set to $default_output."
+}
