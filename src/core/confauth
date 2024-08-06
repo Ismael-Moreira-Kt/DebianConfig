@@ -312,3 +312,13 @@ function update_firmware() {
 
     echo "Updated system firmware."
 }
+
+
+
+function manage_device_drivers() {
+    echo "Managing additional device drivers..."
+
+    sudo apt install -y linux-firmware
+
+    echo "Additional device drivers managed."
+}
