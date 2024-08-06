@@ -158,3 +158,13 @@ function configure_apt_preferences() {
     
     echo "APT preferences configured."
 }
+
+
+
+function set_up_aptitude() {
+    echo "Configuring Aptitude..."
+
+    sudo apt install -y aptitude
+
+    echo "Aptitude installed and configured."
+}
