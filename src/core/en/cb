@@ -55,3 +55,19 @@ function configure_remote_backup() {
 
     echo "Remote backup configured and executed from $SOURCE_DIR to $REMOTE_USER@$REMOTE_HOST:$DEST_DIR."
 }
+
+
+
+function configure_automatic_backup() {
+    echo "Configuring Automatic Backup..."
+
+    read -p "Enter the source directory: " SOURCE_DIR
+    read -p "Enter the destination directory (local or remote): " DEST_DIR
+    read -p "Enter the backup schedule (e.g., 'daily' or 'weekly'): " SCHEDULE
+
+    CRON_JOB="0 2 * * * rsync -avh --delete $SOURCE_DIR $DEST_DIR"
+
+    (crontab -l; echo "$CRON_JOB") | crontab -
+
+    echo "Automatic backup configured. It will run at 2 AM $SCHEDULE."
+}
