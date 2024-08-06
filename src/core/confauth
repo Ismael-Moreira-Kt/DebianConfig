@@ -410,3 +410,14 @@ function configure_audio_profile() {
     
     echo "Perfil de áudio $default_profile configurado para a placa de som $default_card."
 }
+
+
+
+function install_audio_tools() {
+    echo "Installing audio tools (ALSA and PulseAudio)..."
+
+    sudo apt update -y
+    sudo apt install -y alsa-utils pavucontrol pulseaudio
+
+    echo "Tools installed."
+}
