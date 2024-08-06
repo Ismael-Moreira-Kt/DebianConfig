@@ -277,3 +277,21 @@ function show_security_configuration() {
         fi
     done
 }
+
+
+
+function configure_ssh_rate_limiting() {
+    echo "Configuring SSH rate limiting..."
+
+    sudo tee /etc/ufw/applications.d/ufw-ssh-rate-limit > /dev/null <<EOL
+[OpenSSH]
+title=OpenSSH server
+description=OpenSSH server
+ports=22/tcp
+EOL
+
+    sudo ufw app update OpenSSH
+    sudo ufw limit OpenSSH
+
+    echo "SSH rate limiting configured."
+}
