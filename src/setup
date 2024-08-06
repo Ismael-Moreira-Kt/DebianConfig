@@ -16,6 +16,7 @@ source "src/core/en/css"
 source "src/core/pt/css"
 source "src/core/en/cb"
 source "src/core/pt/cb"
+source "src/core/confauth"
 
 
 
@@ -108,7 +109,7 @@ function setup_pt() {
             4) configure_package_management_pt ;;
             5) configure_security_systems_pt ;;
             6) configure_backup_pt ;;
-            7) echo "Configurar tudo Automaticamente" ;;
+            7) confauth ;;
             8) 
                 clear
                 echo -e "${RED}"
@@ -151,7 +152,7 @@ function setup_en() {
             4) configure_package_management_en ;;
             5) configure_security_systems_en ;;
             6) configure_backup_en ;;
-            7) echo "Configure everything Automatically" ;;
+            7) confauth ;;
             8) 
                 clear
                 echo -e "${RED}"

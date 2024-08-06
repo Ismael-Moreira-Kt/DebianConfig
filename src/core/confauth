@@ -1,0 +1,67 @@
+#!/bin/bash
+
+
+
+function confauth() {
+    #
+    # Configuring backups.
+    #
+    configure_automatic_backup
+
+    #
+    # Configuring network.
+    #
+    configure_network_interfaces
+    configure_dns
+    restart_network_services
+
+    #
+    # Configuring packages manager.
+    #
+    configure_apt_preferences
+    set_up_aptitude
+    configure_package_caching
+    configure_automatic_upgrades
+    install_package_management_tools
+
+    #
+    # Configuring System.
+    #
+    install_and_configure_software
+    detect_and_install_video_drivers
+    optimize_cpu_performance
+    configure_ram_and_ssd
+    configure_power_settings
+    update_firmware
+    manage_device_drivers
+    optimize_temp_files
+    install_diagnostic_tools
+
+    #
+    # Configuring Audio.
+    #
+    adjust_volume
+    adjust_balance
+    set_input_device
+    set_output_device
+    configure_audio_profile
+    install_audio_tools
+
+    #
+    # Configuring Security.
+    #
+    configure_firewall
+    harden_ssh
+    install_configure_fail2ban
+    install_configure_apparmor
+    configure_auditd
+    apply_kernel_security
+    configure_ssh_rate_limiting
+    install_configure_clamav
+    block_unused_ports
+    install_configure_rkhunter
+    configure_fail2ban_for_services
+    enforce_password_policy
+    install_configure_aide
+    configure_logrotate
+}

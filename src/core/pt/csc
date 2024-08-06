@@ -208,6 +208,4 @@ function describe_audio_packages() {
             break
         fi
     done
-
-    choose_sound_configuration_pt
 }
