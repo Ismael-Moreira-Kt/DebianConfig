@@ -345,3 +345,13 @@ function install_diagnostic_tools() {
 
     echo "Diagnostic tools installed and sensors detected."
 }
+
+
+
+function adjust_volume() {
+    echo "Adjusting volume..."
+    
+    amixer -D pulse sset Master 80%
+    
+    echo "Volume adjusted successfully!"
+}
