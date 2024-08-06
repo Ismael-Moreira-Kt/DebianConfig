@@ -82,3 +82,23 @@ function configure_firewall() {
 
     echo "Firewall configured and enabled."
 }
+
+
+
+function harden_ssh() {
+    echo "Hardening SSH Configuration..."
+
+    sudo sed -i 's/#Port 22/Port 22/' /etc/ssh/sshd_config
+    sudo sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config
+    sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+    sudo sed -i 's/#PermitEmptyPasswords no/PermitEmptyPasswords no/' /etc/ssh/sshd_config
+    sudo sed -i 's/#ChallengeResponseAuthentication no/ChallengeResponseAuthentication no/' /etc/ssh/sshd_config
+    sudo sed -i 's/#UsePAM yes/UsePAM yes/' /etc/ssh/sshd_config
+
+    echo "Allowing only key-based authentication..."
+    sudo sed -i 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/' /etc/ssh/sshd_config
+
+    sudo systemctl restart sshd
+
+    echo "SSH configuration hardened."
+}
