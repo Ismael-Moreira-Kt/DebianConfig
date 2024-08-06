@@ -467,3 +467,15 @@ function install_configure_fail2ban() {
 
     echo "Fail2Ban installed and configured with default settings."
 }
+
+
+
+function install_configure_apparmor() {
+    echo "Installing and Configuring AppArmor..."
+                
+    sudo apt install -y apparmor apparmor-utils
+    sudo systemctl enable apparmor
+    sudo systemctl start apparmor
+    
+    echo "AppArmor installed and activated."
+}
