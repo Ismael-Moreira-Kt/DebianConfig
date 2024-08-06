@@ -320,3 +320,17 @@ function install_configure_clamav() {
 
     echo "ClamAV installed and configured."
 }
+
+
+
+function block_unused_ports() {
+    echo "Blocking unused ports..."
+
+    PORTS=(23 25 110 143)
+
+    for PORT in "${PORTS[@]}"; do
+        sudo ufw deny $PORT
+    done
+
+    echo "Unused ports blocked."
+}
