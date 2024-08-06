@@ -173,32 +173,50 @@ function optimize_cpu_performance() {
 
 
 function configure_ram_and_ssd() {
-    echo "Configurando RAM e configurações de SSD..."
+    echo "Configurando as definições de RAM e SSD..."
 
-    sudo apt install -y preload
-
-    echo "Configurando arquivo de swap..."
-    
-    SWAPFILE="/swapfile"
-    
-    sudo fallocate -l 2G "$SWAPFILE"
-    sudo chmod 600 "$SWAPFILE"
-    sudo mkswap "$SWAPFILE"
-    sudo swapon "$SWAPFILE"
-    
-    echo "$SWAPFILE none swap sw 0 0" | sudo tee -a /etc/fstab > /dev/null
-
-    if grep -q "discard" /etc/fstab; then
-        echo "TRIM já está habilitado."
-    else
-        echo "Habilitando TRIM para SSD..."
-    
-        sudo sed -i 's/\(.*\)\s\([^#]\)/\1 discard \2/' /etc/fstab
+    if ! sudo apt install -y preload; then
+        echo "Falha ao instalar o preload."
+        return 1
     fi
 
-    echo "Configurações de RAM e SSD configuradas."
-}
+    echo "Configurar a swapfile..."
+    
+    SWAPFILE="/swapfile"
 
+    if ! sudo dd if=/dev/zero of="$SWAPFILE" bs=1M count=2048 status=progress; then
+        echo "Falha ao criar o swapfile."
+        return 1
+    fi
+
+    sudo chmod 600 "$SWAPFILE"
+    if ! sudo mkswap "$SWAPFILE"; then
+        echo "Falha ao configurar a área de troca."
+        return 1
+    fi
+
+    if ! sudo swapon "$SWAPFILE"; then
+        echo "Falha ao ativar o ficheiro de troca."
+        return 1
+    fi
+
+    echo "$SWAPFILE none swap sw 0 0 0" | sudo tee -a /etc/fstab > /dev/null
+
+    if grep -q "descartar" /etc/fstab; then
+        echo "A TRIM já está activada."
+    else
+        echo "Ativar TRIM para SSD..."
+
+        if ! sudo sed -i '/swap/s/defaults/defaults,discard/' /etc/fstab; then
+            echo "Falha ao ativar TRIM para SSD."
+            return 1
+        fi
+
+        echo "TRIM ativado para SSD."
+    fi
+
+    echo "Definições de RAM e SSD configuradas."
+}
 
 
 function show_system_info() {
@@ -273,29 +291,29 @@ function configure_security() {
 
 function update_firmware() {
     echo -e "\n\n"
-    echo "Checking if the system is running in UEFI mode..."
+    echo "A verificar se o sistema está a funcionar em modo UEFI..."
 
     if [ -d /sys/firmware/efi ]; then
-        echo "System is running in UEFI mode. Proceeding with firmware update..."
+        echo "O sistema está a funcionar em modo UEFI. Prosseguindo com a atualização do firmware..."
 
-        echo "Updating the system firmware..."
+        echo "A atualizar o firmware do sistema..."
         
         if ! sudo apt install -y fwupd; then
-            echo "Failed to install fwupd."
+            echo "Falha na instalação do fwupd."
             return 1
         fi
         
         if ! sudo fwupdmgr update; then
-            echo "Firmware update failed."
+            echo "Falha na atualização do firmware."
             return 1
         fi
         
-        echo "System firmware updated successfully."
+        echo "O firmware do sistema foi atualizado com êxito."
 
     else
-        echo "Warning: System is running in Legacy BIOS mode."
-        echo "UEFI firmware updates cannot be applied in Legacy BIOS mode."
-        echo "Please reboot into UEFI mode to perform the firmware update."
+        echo "Aviso: O sistema está a ser executado no modo Legacy BIOS."
+        echo "As actualizações de firmware UEFI não podem ser aplicadas no modo Legacy BIOS."
+        echo "Reinicie no modo UEFI para efetuar a atualização do firmware."
     fi
 }
 

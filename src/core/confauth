@@ -272,25 +272,44 @@ function optimize_cpu_performance() {
 function configure_ram_and_ssd() {
     echo "Configuring RAM and SSD settings..."
 
-    sudo apt install -y preload
+    if ! sudo apt install -y preload; then
+        echo "Failed to install preload."
+        return 1
+    fi
 
     echo "Configuring swapfile..."
     
     SWAPFILE="/swapfile"
-    
-    sudo fallocate -l 2G "$SWAPFILE"
+
+    if ! sudo dd if=/dev/zero of="$SWAPFILE" bs=1M count=2048 status=progress; then
+        echo "Failed to create swapfile."
+        return 1
+    fi
+
     sudo chmod 600 "$SWAPFILE"
-    sudo mkswap "$SWAPFILE"
-    sudo swapon "$SWAPFILE"
-    
+    if ! sudo mkswap "$SWAPFILE"; then
+        echo "Failed to set up swap area."
+        return 1
+    fi
+
+    if ! sudo swapon "$SWAPFILE"; then
+        echo "Failed to enable swapfile."
+        return 1
+    fi
+
     echo "$SWAPFILE none swap sw 0 0" | sudo tee -a /etc/fstab > /dev/null
 
     if grep -q "discard" /etc/fstab; then
         echo "TRIM is already enabled."
     else
         echo "Enabling TRIM for SSD..."
-    
-        sudo sed -i 's/\(.*\)\s\([^#]\)/\1 discard \2/' /etc/fstab
+
+        if ! sudo sed -i '/swap/s/defaults/defaults,discard/' /etc/fstab; then
+            echo "Failed to enable TRIM for SSD."
+            return 1
+        fi
+
+        echo "TRIM enabled for SSD."
     fi
 
     echo "RAM and SSD settings configured."
