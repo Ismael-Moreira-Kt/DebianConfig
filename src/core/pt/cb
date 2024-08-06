@@ -1,0 +1,86 @@
+#!/bin/bash
+
+
+
+function configure_backup() {
+    local CHOICE=-1
+
+    while true; do
+        clear
+
+        echo "Escolha uma opção para configurar o backup:"
+        echo "1. Configurar Backup Local"
+        echo "2. Configurar Backup Remoto"
+        echo "3. Configurar Backup Automático"
+        echo "4. Mostrar Configuração Atual de Backup"
+        echo "5. Voltar ao Menu Principal"
+
+        read -p "Sua escolha (1-5): " CHOICE
+
+        case $CHOICE in
+            1) configure_local_backup ;;
+            2) configure_remote_backup ;;
+            3) configure_automatic_backup ;;
+            4) show_backup_configuration ;;
+            5) break ;;
+            *) echo "Opção inválida. Por favor, tente novamente." ;;
+        esac
+    done
+}
+
+
+
+function configure_local_backup() {
+    echo "Configurando Backup Local..."
+
+    read -p "Digite o diretório de origem: " SOURCE_DIR
+    read -p "Digite o diretório de destino: " DEST_DIR
+
+    rsync -avh --delete $SOURCE_DIR $DEST_DIR
+
+    echo "Backup local configurado e executado de $SOURCE_DIR para $DEST_DIR."
+}
+
+
+
+function configure_remote_backup() {
+    echo "Configurando Backup Remoto..."
+
+    read -p "Digite o diretório de origem: " SOURCE_DIR
+    read -p "Digite o usuário remoto: " REMOTE_USER
+    read -p "Digite o IP ou hostname do servidor remoto: " REMOTE_HOST
+    read -p "Digite o diretório de destino no servidor remoto: " DEST_DIR
+
+    rsync -avh --delete $SOURCE_DIR $REMOTE_USER@$REMOTE_HOST:$DEST_DIR
+
+    echo "Backup remoto configurado e executado de $SOURCE_DIR para $REMOTE_USER@$REMOTE_HOST:$DEST_DIR."
+}
+
+
+
+function configure_automatic_backup() {
+    echo "Configurando Backup Automático..."
+
+    read -p "Digite o diretório de origem: " SOURCE_DIR
+    read -p "Digite o diretório de destino (local ou remoto): " DEST_DIR
+    read -p "Digite a periodicidade do backup (exemplo: 'daily' ou 'weekly'): " SCHEDULE
+
+    CRON_JOB="0 2 * * * rsync -avh --delete $SOURCE_DIR $DEST_DIR"
+
+    (crontab -l; echo "$CRON_JOB") | crontab -
+
+    echo "Backup automático configurado. Será executado às 2h da manhã $SCHEDULE."
+}
+
+
+
+function show_backup_configuration() {
+    echo "Mostrando configuração atual de backup..."
+
+    crontab -l | grep rsync || echo "Nenhum backup automático configurado."
+
+    while true; do
+        read -rsn1 input
+        if [[ $input == 'q' ]]; então break; fi
+    done
+}

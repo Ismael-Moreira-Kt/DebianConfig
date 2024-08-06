@@ -41,7 +41,7 @@ function show_menu() {
     local input
 
     while true; do
-        #clear
+        clear
         
         for i in "${!options[@]}"; do
             if [ $i -eq $choice ]; then
