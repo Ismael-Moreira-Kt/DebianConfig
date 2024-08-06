@@ -346,3 +346,23 @@ function install_configure_rkhunter() {
 
     echo "rkhunter installed and configured. Run 'rkhunter --check' to scan."
 }
+
+
+
+function configure_ssh_2fa() {
+    echo "Configuring SSH with Two-Factor Authentication..."
+
+    sudo apt install -y libpam-google-authenticator
+    sudo sed -i '/@include common-auth/a auth required pam_google_authenticator.so' /etc/pam.d/sshd
+    sudo sed -i 's/ChallengeResponseAuthentication no/ChallengeResponseAuthentication yes/' /etc/ssh/sshd_config
+    sudo systemctl restart sshd
+
+    echo "2FA for SSH configured. Each user needs to set up their Google Authenticator."
+        
+    while true; do
+        read -rsn1 input
+        if [[ $input == 'q' ]]; then
+            break
+        fi
+    done
+}
