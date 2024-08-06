@@ -626,3 +626,14 @@ function install_configure_aide() {
 
     echo "AIDE installed and initialized. Run 'aide --check' to check the integrity of the files."
 }
+
+
+
+function configure_logrotate() {
+    echo "Configuring log rotation..."
+
+    sudo apt install -y logrotate
+    sudo logrotate -f /etc/logrotate.conf
+
+    echo "Log rotation configured."
+}
