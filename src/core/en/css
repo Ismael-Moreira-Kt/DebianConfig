@@ -115,3 +115,15 @@ function install_configure_fail2ban() {
 
     echo "Fail2Ban installed and configured with default settings."
 }
+
+
+
+function configure_security_updates() {
+    echo "Configuring Automatic Security Updates..."
+
+    sudo apt install -y unattended-upgrades
+
+    sudo dpkg-reconfigure --priority=low unattended-upgrades
+
+    echo "Automatic security updates configured."
+}
