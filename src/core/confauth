@@ -547,3 +547,16 @@ EOL
 
     echo "SSH rate limiting configured."
 }
+
+
+
+function install_configure_clamav() {
+    echo "Installing and Configuring ClamAV..."
+
+    sudo apt install -y clamav clamav-daemon
+    sudo freshclam
+    sudo systemctl enable clamav-daemon
+    sudo systemctl start clamav-daemon
+
+    echo "ClamAV installed and configured."
+}
