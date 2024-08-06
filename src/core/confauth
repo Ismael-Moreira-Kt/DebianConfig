@@ -119,3 +119,17 @@ function configure_dhcp() {
 
     echo "DHCP configuration applied to the $INTERFACE interface."
 }
+
+
+
+function configure_dns() {
+    echo "Configuring DNS servers..."
+
+    DNS1="1.1.1.1"
+    DNS2="1.0.0.1"
+
+    echo "nameserver $DNS1" | sudo tee /etc/resolv.conf > /dev/null
+    echo "nameserver $DNS2" | sudo tee -a /etc/resolv.conf > /dev/null
+
+    echo "DNS configuration applied: $DNS1 ${DNS2:+and $DNS2}"
+}
