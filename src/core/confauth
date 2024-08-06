@@ -168,3 +168,18 @@ function set_up_aptitude() {
 
     echo "Aptitude installed and configured."
 }
+
+
+
+function configure_package_caching() {
+    echo "Configuring package caching..."
+    echo "Configuring APT cache directories..."
+    
+    sudo mkdir -p /var/cache/apt/archives/partial
+    sudo chmod 755 /var/cache/apt/archives/partial
+
+    echo "Configuring APT cache clearing..."
+    echo "APT::Clean-Installed \"true\";" | sudo tee /etc/apt/apt.conf.d/10clean > /dev/null
+
+    echo "Packet cache configured."
+}
