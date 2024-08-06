@@ -272,12 +272,31 @@ function configure_security() {
 
 
 function update_firmware() {
-    echo "Atualizando o firmware do sistema..."
+    echo -e "\n\n"
+    echo "Checking if the system is running in UEFI mode..."
 
-    sudo apt install -y fwupd
-    sudo fwupdmgr update
+    if [ -d /sys/firmware/efi ]; then
+        echo "System is running in UEFI mode. Proceeding with firmware update..."
 
-    echo "Firmware do sistema atualizado."
+        echo "Updating the system firmware..."
+        
+        if ! sudo apt install -y fwupd; then
+            echo "Failed to install fwupd."
+            return 1
+        fi
+        
+        if ! sudo fwupdmgr update; then
+            echo "Firmware update failed."
+            return 1
+        fi
+        
+        echo "System firmware updated successfully."
+
+    else
+        echo "Warning: System is running in Legacy BIOS mode."
+        echo "UEFI firmware updates cannot be applied in Legacy BIOS mode."
+        echo "Please reboot into UEFI mode to perform the firmware update."
+    fi
 }
 
 
