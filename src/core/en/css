@@ -156,3 +156,16 @@ function install_configure_apparmor_selinux() {
         esac
     done
 }
+
+
+
+function configure_auditd() {
+    echo "Configuring Auditd for System Auditing..."
+
+    sudo apt install -y auditd audispd-plugins
+
+    sudo systemctl enable auditd
+    sudo systemctl start auditd
+
+    echo "Auditd installed and enabled."
+}
