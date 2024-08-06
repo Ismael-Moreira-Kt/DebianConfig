@@ -64,6 +64,11 @@ function confauth() {
     enforce_password_policy
     install_configure_aide
     configure_logrotate
+
+    #
+    # Finish the update
+    #
+    prompt_reboot
 }
 
 
@@ -636,4 +641,20 @@ function configure_logrotate() {
     sudo logrotate -f /etc/logrotate.conf
 
     echo "Log rotation configured."
+}
+
+
+
+function prompt_reboot() {
+    read -p "Would you like to reboot the system now? (y/n): " REBOOT_RESPONSE
+    if [[ "$REBOOT_RESPONSE" =~ ^[Yy]$ ]]; then
+        echo "Rebooting the system..."
+        sudo reboot
+    else
+        clear
+        
+        echo "System will not be rebooted. Please reboot manually to apply changes."
+        
+        exit 0
+    fi
 }
