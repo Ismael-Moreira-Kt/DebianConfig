@@ -65,3 +65,20 @@ function confauth() {
     install_configure_aide
     configure_logrotate
 }
+
+
+
+function configure_automatic_backup() {
+    echo "Setting up automatic backup."
+
+    SOURCE_DIR="$HOME"
+    BACKUP_BASE_DIR="$HOME/Backups"
+    
+    mkdir -p "$BACKUP_BASE_DIR"
+
+    CRON_JOB="0 2 1 * * mkdir -p \$HOME/Backups/\$(date +\%Y)/\$(date +\%B) && rsync -avh --delete --exclude='\Backups' \$HOME/ \$HOME/Backups/\$(date +\%Y)/\$(date +\%B)/"
+
+    (crontab -l; echo "$CRON_JOB") | crontab -
+
+    echo "Automatic backup configured."
+}
