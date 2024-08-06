@@ -322,3 +322,15 @@ function manage_device_drivers() {
 
     echo "Additional device drivers managed."
 }
+
+
+
+function optimize_temp_files() {
+    echo "Optimization of temporary files and cache..."
+
+    sudo apt install -y bleachbit
+    sudo bleachbit --clean system.*
+    sudo bleachbit --wipe
+
+    echo "Optimized temporary files and cache."
+}
