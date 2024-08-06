@@ -294,18 +294,6 @@ function manage_device_drivers() {
 
 
 
-function optimize_temp_files() {
-    echo "Otimização de arquivos temporários e cache..."
-
-    sudo apt install -y bleachbit
-    sudo bleachbit --clean system.*
-    sudo bleachbit --wipe
-
-    echo "Arquivos temporários e cache otimizados."
-}
-
-
-
 function install_diagnostic_tools() {
     echo "Instalando ferramentas de diagnóstico..."
 
