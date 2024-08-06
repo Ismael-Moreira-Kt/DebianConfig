@@ -237,3 +237,43 @@ EOL
 
     echo "Kernel security settings applied."
 }
+
+
+
+function show_security_configuration() {
+    echo "Showing current security configuration..."
+
+    echo "UFW status:"
+    sudo ufw status verbose
+
+    echo
+    echo "SSH configuration:"
+    grep -E 'Port|PermitRootLogin|PasswordAuthentication|ChallengeResponseAuthentication|UsePAM' /etc/ssh/sshd_config
+
+    echo
+    echo "Fail2Ban status:"
+    sudo systemctl status fail2ban
+
+    echo
+    echo "Auditd status:"
+    sudo systemctl status auditd
+
+    echo
+    echo "AppArmor status:"
+    sudo apparmor_status || echo "AppArmor not configured."
+
+    echo
+    echo "SELinux status:"
+    sudo sestatus || echo "SELinux not configured."
+
+    echo
+    echo "Kernel security settings:"
+    sysctl -a | grep -E 'accept_source_route|ip_forward|rp_filter|tcp_syncookies|accept_redirects|send_redirects|exec-shield|randomize_va_space'
+
+    while true; do
+        read -rsn1 input
+        if [[ $input == 'q' ]]; then
+            break
+        fi
+    done
+}
