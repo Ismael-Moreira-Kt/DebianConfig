@@ -92,11 +92,13 @@ function configure_automatic_backup() {
 
 
 function configure_network_interfaces() {
+    echo -e "\n\n"
     echo "Configuring all network interfaces..."
 
     INTERFACES=$(ip link show | awk '/^[0-9]+:/{print $2}' | sed 's/://')
 
     for INTERFACE in $INTERFACES; do
+        echo -e "\n"
         echo "Configuring interface: $INTERFACE"
         sudo ip link set "$INTERFACE" up
 
@@ -115,6 +117,7 @@ function configure_network_interfaces() {
 
 
 function configure_dhcp() {
+    echo -e "\n"
     INTERFACE=$1
 
     echo "Configuring DHCP on $INTERFACE..."
@@ -129,6 +132,7 @@ function configure_dhcp() {
 
 
 function configure_dns() {
+    echo -e "\n\n"
     echo "Configuring DNS servers..."
 
     DNS1="1.1.1.1"
@@ -143,6 +147,7 @@ function configure_dns() {
 
 
 function restart_network_services() {
+    echo -e "\n\n"
     echo "Restarting network services..."
 
     sudo systemctl restart networking
@@ -154,6 +159,7 @@ function restart_network_services() {
 
 
 function configure_apt_preferences() {
+    echo -e "\n\n"
     echo "Configuring APT preferences..."
 
     sudo mkdir -p /etc/apt/preferences.d
@@ -168,6 +174,7 @@ function configure_apt_preferences() {
 
 
 function set_up_aptitude() {
+    echo -e "\n\n"
     echo "Configuring Aptitude..."
 
     sudo apt install -y aptitude
@@ -178,6 +185,7 @@ function set_up_aptitude() {
 
 
 function configure_package_caching() {
+    echo -e "\n\n"
     echo "Configuring package caching..."
     echo "Configuring APT cache directories..."
     
@@ -193,6 +201,7 @@ function configure_package_caching() {
 
 
 function configure_automatic_upgrades() {
+    echo -e "\n\n"
     echo "Configuring automatic updates..."
 
     echo "Installing unattended-upgrades..."
@@ -209,6 +218,7 @@ function configure_automatic_upgrades() {
 
 
 function install_package_management_tools() {
+    echo -e "\n\n"
     echo "Installing package management tools..."
 
     sudo apt install -y apt-listchanges debconf-utils
@@ -219,6 +229,7 @@ function install_package_management_tools() {
 
 
 function install_and_configure_software() {
+    echo -e "\n\n"
     echo "Installing and configuring essential software..."
     
     sudo apt update -y
@@ -230,6 +241,7 @@ function install_and_configure_software() {
 
 
 function detect_and_install_video_drivers() {
+    echo -e "\n\n"
     echo "Detecting and installing video drivers..."
 
     GPU_MODEL=$(lspci | grep -i vga | awk -F: '{print $3}')
@@ -257,6 +269,7 @@ function detect_and_install_video_drivers() {
 
 
 function optimize_cpu_performance() {
+    echo -e "\n\n"
     echo "Optimize CPU performance..."
 
     sudo apt install -y cpufrequtils
@@ -270,6 +283,7 @@ function optimize_cpu_performance() {
 
 
 function configure_ram_and_ssd() {
+    echo -e "\n\n"
     echo "Configuring RAM and SSD settings..."
 
     if ! sudo apt install -y preload; then
@@ -318,6 +332,7 @@ function configure_ram_and_ssd() {
 
 
 function configure_power_settings() {
+    echo -e "\n\n"
     echo "Configuring power settings..."
 
     sudo apt install -y tlp
@@ -360,6 +375,7 @@ function update_firmware() {
 
 
 function manage_device_drivers() {
+    echo -e "\n\n"
     echo "Managing additional device drivers..."
 
     sudo apt install -y linux-firmware
@@ -370,6 +386,7 @@ function manage_device_drivers() {
 
 
 function install_diagnostic_tools() {
+    echo -e "\n\n"
     echo "Installing diagnostic tools..."
 
     sudo apt install -y smartmontools lm-sensors
@@ -381,6 +398,7 @@ function install_diagnostic_tools() {
 
 
 function adjust_volume() {
+    echo -e "\n\n"
     echo "Adjusting volume..."
     
     amixer -D pulse sset Master 80%
@@ -391,6 +409,7 @@ function adjust_volume() {
 
 
 function adjust_balance() {
+    echo -e "\n\n"
     echo "Adjusting audio balance..."
 
     amixer -D pulse sset Master 50%,50%
@@ -401,6 +420,7 @@ function adjust_balance() {
 
 
 function set_input_device() {
+    echo -e "\n\n"
     echo "Configuring the default input device..."
     default_input=$(pactl list sources short | grep -m 1 RUNNING | awk '{print $1}')
     
@@ -417,6 +437,7 @@ function set_input_device() {
 
 
 function set_output_device() {
+    echo -e "\n\n"
     echo "Configuring the default output device..."
     default_output=$(pactl list sinks short | grep -m 1 RUNNING | awk '{print $1}')
     
@@ -433,6 +454,7 @@ function set_output_device() {
 
 
 function configure_audio_profile() {
+    echo -e "\n\n"
     echo "Configurando o perfil de áudio padrão..."
     
     default_card=$(pactl list cards short | awk '{print $1}' | head -n 1)
@@ -446,6 +468,7 @@ function configure_audio_profile() {
 
 
 function install_audio_tools() {
+    echo -e "\n\n"
     echo "Installing audio tools (ALSA and PulseAudio)..."
 
     sudo apt update -y
@@ -457,6 +480,7 @@ function install_audio_tools() {
 
 
 function configure_firewall() {
+    echo -e "\n\n"
     echo "Configurando Firewall com UFW..."
 
     sudo apt install -y ufw
@@ -471,6 +495,7 @@ function configure_firewall() {
 
 
 function harden_ssh() {
+    echo -e "\n\n"
     echo "Hardening SSH Configuration..."
 
     sudo sed -i 's/#Port 22/Port 22/' /etc/ssh/sshd_config
@@ -491,6 +516,7 @@ function harden_ssh() {
 
 
 function install_configure_fail2ban() {
+    echo -e "\n\n"
     echo "Installing and Configuring Fail2Ban..."
 
     sudo apt install -y fail2ban
@@ -503,6 +529,7 @@ function install_configure_fail2ban() {
 
 
 function install_configure_apparmor() {
+    echo -e "\n\n"
     echo "Installing and Configuring AppArmor..."
                 
     sudo apt install -y apparmor apparmor-utils
@@ -515,6 +542,7 @@ function install_configure_apparmor() {
 
 
 function configure_auditd() {
+    echo -e "\n\n"
     echo "Configuring Auditd for System Auditing..."
 
     sudo apt install -y auditd audispd-plugins
@@ -527,6 +555,7 @@ function configure_auditd() {
 
 
 function apply_kernel_security() {
+    echo -e "\n\n"
     echo "Applying Kernel Security Settings..."
     echo "Applying sysctl security settings..."
     
@@ -565,6 +594,7 @@ EOL
 
 
 function configure_ssh_rate_limiting() {
+    echo -e "\n\n"
     echo "Configuring SSH rate limiting..."
 
     sudo tee /etc/ufw/applications.d/ufw-ssh-rate-limit > /dev/null <<EOL
@@ -583,6 +613,7 @@ EOL
 
 
 function install_configure_clamav() {
+    echo -e "\n\n"
     echo "Installing and Configuring ClamAV..."
 
     sudo apt install -y clamav clamav-daemon
@@ -596,6 +627,7 @@ function install_configure_clamav() {
 
 
 function block_unused_ports() {
+    echo -e "\n\n"
     echo "Blocking unused ports..."
 
     PORTS=(23 25 110 143)
@@ -610,6 +642,7 @@ function block_unused_ports() {
 
 
 function install_configure_rkhunter() {
+    echo -e "\n\n"
     echo "Installing and Configuring rkhunter..."
 
     sudo apt install -y rkhunter
@@ -622,6 +655,7 @@ function install_configure_rkhunter() {
 
 
 function configure_fail2ban_for_services() {
+    echo -e "\n\n"
     echo "Configuring Fail2Ban for additional services..."
 
     local SERVICES=("apache-auth" "nginx-http-auth" "postfix" "dovecot")
@@ -639,6 +673,7 @@ function configure_fail2ban_for_services() {
 
 
 function enforce_password_policy() {
+    echo -e "\n\n"
     echo "Implementing strong password policy..."
 
     sudo apt install -y libpam-pwquality
@@ -650,6 +685,7 @@ function enforce_password_policy() {
 
 
 function install_configure_aide() {
+    echo -e "\n\n"
     echo "Installing and Configuring AIDE..."
 
     sudo apt install -y aide
@@ -662,6 +698,7 @@ function install_configure_aide() {
 
 
 function configure_logrotate() {
+    echo -e "\n\n"
     echo "Configuring log rotation..."
 
     sudo apt install -y logrotate
@@ -673,7 +710,9 @@ function configure_logrotate() {
 
 
 function prompt_reboot() {
+    echo -e "\n\n"
     read -p "Would you like to reboot the system now? (y/n): " REBOOT_RESPONSE
+    
     if [[ "$REBOOT_RESPONSE" =~ ^[Yy]$ ]]; then
         echo "Rebooting the system..."
         sudo reboot
