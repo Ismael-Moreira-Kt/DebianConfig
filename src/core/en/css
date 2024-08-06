@@ -199,3 +199,41 @@ function configure_disk_encryption() {
         fi
     done
 }
+
+
+
+function apply_kernel_security() {
+    echo "Applying Kernel Security Settings..."
+    echo "Applying sysctl security settings..."
+    
+    sudo tee -a /etc/sysctl.conf > /dev/null <<EOL
+# Disable IP source routing
+net.ipv4.conf.all.accept_source_route = 0
+net.ipv6.conf.all.accept_source_route = 0
+
+# Disable packet forwarding
+net.ipv4.ip_forward = 0
+net.ipv6.conf.all.forwarding = 0
+
+# Enable IP spoofing protection
+net.ipv4.conf.all.rp_filter = 1
+
+# Enable SYN cookies
+net.ipv4.tcp_syncookies = 1
+
+# Disable ICMP redirects
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv6.conf.all.accept_redirects = 0
+
+# Disable sending of redirects
+net.ipv4.conf.all.send_redirects = 0
+
+# Enable ExecShield (if supported)
+kernel.exec-shield = 1
+kernel.randomize_va_space = 2
+EOL
+
+    sudo sysctl -p
+
+    echo "Kernel security settings applied."
+}
