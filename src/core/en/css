@@ -181,3 +181,21 @@ function setup_log_monitoring() {
 
     echo "Log monitoring set up with Logwatch."
 }
+
+
+
+function configure_disk_encryption() {
+    echo "Configuring Disk Encryption..."
+
+    sudo apt install -y cryptsetup
+
+    echo "Disk encryption tools installed. Manual setup required for encryption."
+
+    while true; do
+        read -rsn1 input
+    
+        if [[ $input == 'q' ]]; then
+            break
+        fi
+    done
+}
