@@ -12,6 +12,8 @@ source "src/core/en/cs"
 source "src/core/pt/cs"
 source "src/core/en/cpm"
 source "src/core/pt/cpm"
+source "src/core/en/css"
+source "src/core/pt/css"
 
 
 
@@ -145,7 +147,7 @@ function setup_en() {
             2) configure_network_en ;;
             3) configure_system_en ;;
             4) configure_package_management_en ;;
-            5) echo "Configuring Security Systems" ;;
+            5) configure_security_systems_en ;;
             6) echo "Configure Backup" ;;
             7) echo "Configure everything Automatically" ;;
             8) 

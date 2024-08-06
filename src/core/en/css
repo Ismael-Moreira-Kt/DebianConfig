@@ -1,0 +1,61 @@
+#!/bin/bash
+
+
+
+function configure_security_systems_en() {
+    local CHOICE=-1
+
+    while true; do
+        clear
+
+        echo "Choose an option to configure security:"
+        echo "1. Configure Firewall with UFW"
+        echo "2. Harden SSH Configuration"
+        echo "3. Install and Configure Fail2Ban"
+        echo "4. Configure Automatic Security Updates"
+        echo "5. Install and Configure AppArmor/SELinux"
+        echo "6. Configure Auditd for System Auditing"
+        echo "7. Set Up Log Monitoring"
+        echo "8. Configure Disk Encryption"
+        echo "9. Apply Kernel Security Settings"
+        echo "10. Configure SSH Rate Limiting"
+        echo "11. Configure NTP"
+        echo "12. Install and Configure ClamAV"
+        echo "13. Block Unused Ports"
+        echo "14. Install and Configure rkhunter"
+        echo "15. Configure SSH Two-Factor Authentication (2FA)"
+        echo "16. Configure fail2ban for Services"
+        echo "17. Install and Configure Intrusion Detection/Prevention System"
+        echo "18. Enforce Password Policy"
+        echo "19. Install and Configure Advanced Intrusion Detection Environment"
+        echo "20. Show Security Configuration"
+        echo "21. Return to Main Menu"
+
+        read -p "Your choice (1-21): " CHOICE
+
+        case $CHOICE in
+            1) configure_firewall ;;
+            2) harden_ssh ;;
+            3) install_configure_fail2ban ;;
+            4) configure_security_updates ;;
+            5) install_configure_apparmor_selinux ;;
+            6) configure_auditd ;;
+            7) setup_log_monitoring ;;
+            8) configure_disk_encryption ;;
+            9) apply_kernel_security ;;
+            10) configure_ssh_rate_limiting ;;
+            11) configure_ntp ;;
+            12) install_configure_clamav ;;
+            13) block_unused_ports ;;
+            14) install_configure_rkhunter ;;
+            15) configure_ssh_2fa ;;
+            16) configure_fail2ban_for_services ;;
+            17) install_configure_ids_ips ;;
+            18) enforce_password_policy ;;
+            19) install_configure_aide ;;
+            20) show_security_configuration ;;
+            21) break ;;
+            *) echo "Invalid option. Please try again." ;;
+        esac
+    done
+}
