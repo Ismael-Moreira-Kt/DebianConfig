@@ -81,6 +81,6 @@ function show_backup_configuration() {
 
     while true; do
         read -rsn1 input
-        if [[ $input == 'q' ]]; então break; fi
+        if [[ $input == 'q' ]]; then break; fi
     done
 }
