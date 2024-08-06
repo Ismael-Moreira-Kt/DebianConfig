@@ -133,3 +133,14 @@ function configure_dns() {
 
     echo "DNS configuration applied: $DNS1 ${DNS2:+and $DNS2}"
 }
+
+
+
+function restart_network_services() {
+    echo "Restarting network services..."
+
+    sudo systemctl restart networking
+    sudo systemctl restart NetworkManager
+
+    echo "Network services restarted."
+}
