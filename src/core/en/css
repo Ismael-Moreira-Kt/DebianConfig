@@ -400,3 +400,14 @@ function install_configure_ids_ips() {
         fi
     done
 }
+
+
+
+function enforce_password_policy() {
+    echo "Enforcing strong password policy..."
+
+    sudo apt install -y libpam-pwquality
+    sudo sed -i '/pam_pwquality.so/ s/retry=3/retry=3 minlen=12 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1/' /etc/pam.d/common-password
+
+    echo "Strong password policy enforced."
+}
