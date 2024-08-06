@@ -27,3 +27,16 @@ function configure_backup_en() {
         esac
     done
 }
+
+
+
+function configure_local_backup() {
+    echo "Configuring Local Backup..."
+
+    read -p "Enter the source directory: " SOURCE_DIR
+    read -p "Enter the destination directory: " DEST_DIR
+
+    rsync -avh --delete $SOURCE_DIR $DEST_DIR
+
+    echo "Local backup configured and executed from $SOURCE_DIR to $DEST_DIR."
+}
