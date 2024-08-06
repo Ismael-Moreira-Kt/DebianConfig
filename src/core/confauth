@@ -603,3 +603,14 @@ function configure_fail2ban_for_services() {
 
     echo "Fail2Ban configured for additional services."
 }
+
+
+
+function enforce_password_policy() {
+    echo "Implementing strong password policy..."
+
+    sudo apt install -y libpam-pwquality
+    sudo sed -i '/pam_pwquality.so/ s/retry=3/retry=3 minlen=12 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1/' /etc/pam.d/common-password
+
+    echo "Strong password policy implemented."
+}
