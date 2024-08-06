@@ -3,6 +3,8 @@
 
 
 function confauth() {
+    clear
+
     #
     # Configuring backups.
     #
