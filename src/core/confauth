@@ -421,3 +421,17 @@ function install_audio_tools() {
 
     echo "Tools installed."
 }
+
+
+
+function configure_firewall() {
+    echo "Configurando Firewall com UFW..."
+
+    sudo apt install -y ufw
+    sudo ufw default deny incoming
+    sudo ufw default allow outgoing
+    sudo ufw allow ssh;
+    sudo ufw enable
+
+    echo "Firewall configurado e habilitado."
+}
