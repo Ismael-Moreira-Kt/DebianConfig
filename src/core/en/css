@@ -59,3 +59,26 @@ function configure_security_systems_en() {
         esac
     done
 }
+
+
+
+function configure_firewall() {
+    echo "Configuring Firewall with UFW..."
+
+    sudo apt install -y ufw
+    sudo ufw default deny incoming
+    sudo ufw default allow outgoing
+
+    while true; do
+        read -p "Would you like to allow SSH connections (y/n)? " ALLOW_SSH
+        case $ALLOW_SSH in
+            [Yy]* ) sudo ufw allow ssh; echo "SSH allowed."; break ;;
+            [Nn]* ) echo "SSH not allowed."; break ;;
+            * ) echo "Please answer yes or no." ;;
+        esac
+    done
+
+    sudo ufw enable
+
+    echo "Firewall configured and enabled."
+}
