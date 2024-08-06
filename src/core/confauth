@@ -209,3 +209,14 @@ function install_package_management_tools() {
 
     echo "Package management tools installed."
 }
+
+
+
+function install_and_configure_software() {
+    echo "Installing and configuring essential software..."
+    
+    sudo apt update -y
+    sudo apt install -y curl git vim htop build-essential preload
+
+    echo "Essential software successfully installed."
+}
