@@ -71,3 +71,16 @@ function configure_automatic_backup() {
 
     echo "Automatic backup configured. It will run at 2 AM $SCHEDULE."
 }
+
+
+
+function show_backup_configuration() {
+    echo "Showing current backup configuration..."
+
+    crontab -l | grep rsync || echo "No automatic backup configured."
+
+    while true; do
+        read -rsn1 input
+        if [[ $input == 'q' ]]; then break; fi
+    done
+}
