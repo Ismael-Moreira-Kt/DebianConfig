@@ -169,3 +169,15 @@ function configure_auditd() {
 
     echo "Auditd installed and enabled."
 }
+
+
+
+function setup_log_monitoring() {
+    echo "Setting Up Log Monitoring..."
+
+    sudo apt install -y logwatch
+
+    sudo logwatch --detail High --mailto root --range All --service All
+
+    echo "Log monitoring set up with Logwatch."
+}
