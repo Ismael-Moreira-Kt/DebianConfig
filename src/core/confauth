@@ -614,3 +614,15 @@ function enforce_password_policy() {
 
     echo "Strong password policy implemented."
 }
+
+
+
+function install_configure_aide() {
+    echo "Installing and Configuring AIDE..."
+
+    sudo apt install -y aide
+    sudo aideinit
+    sudo mv /var/lib/aide/aide.db.new /var/lib/aide/aide.db
+
+    echo "AIDE installed and initialized. Run 'aide --check' to check the integrity of the files."
+}
