@@ -22,12 +22,11 @@ function configure_system_pt() {
         echo "11. Atualizar o Firmware"
         echo "12. Configurar Backup"
         echo "13. Gerenciar Drivers de Dispositivos"
-        echo "14. Otimizar Arquivos Temporários e Cache"
-        echo "15. Instalar Ferramentas de Diagnóstico"
-        echo "16. Mostrar Informações do Sistema"
-        echo "17. Voltar ao Menu Principal"
+        echo "14. Instalar Ferramentas de Diagnóstico"
+        echo "15. Mostrar Informações do Sistema"
+        echo "16. Voltar ao Menu Principal"
 
-        read -p "Sua escolha (1-17): " CHOICE
+        read -p "Sua escolha (1-16): " CHOICE
 
         case $CHOICE in
             1) set_timezone ;;
@@ -43,10 +42,9 @@ function configure_system_pt() {
             11) update_firmware ;;
             12) configure_backup ;;
             13) manage_device_drivers ;;
-            14) optimize_temp_files ;;
-            15) install_diagnostic_tools ;;
+            14) install_diagnostic_tools ;;
             16) show_system_info ;;
-            17) break ;;
+            16) break ;;
             *) echo "Opção inválida. Tente novamente." ;;
         esac
     done

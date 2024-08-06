@@ -22,12 +22,11 @@ function configure_system_en() {
         echo "11. Update Firmware"
         echo "12. Configure Backup"
         echo "13. Manage Device Drivers"
-        echo "14. Optimize Temporary Files and Cache"
-        echo "15. Install Diagnostic Tools"
-        echo "16. Show System Information"
-        echo "17. Return to Main Menu"
+        echo "14. Install Diagnostic Tools"
+        echo "15. Show System Information"
+        echo "16. Return to Main Menu"
 
-        read -p "Your choice (1-17): " CHOICE
+        read -p "Your choice (1-16): " CHOICE
 
         case $CHOICE in
             1) set_timezone ;;
@@ -43,7 +42,6 @@ function configure_system_en() {
             11) update_firmware ;;
             12) configure_backup ;;
             13) manage_device_drivers ;;
-            14) optimize_temp_files ;;
             15) install_diagnostic_tools ;;
             16) show_system_info ;;
             17) break ;;

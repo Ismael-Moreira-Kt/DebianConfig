@@ -36,7 +36,6 @@ function confauth() {
     configure_power_settings
     update_firmware
     manage_device_drivers
-    optimize_temp_files
     install_diagnostic_tools
 
     #
