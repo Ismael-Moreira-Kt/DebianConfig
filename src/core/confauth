@@ -586,3 +586,20 @@ function install_configure_rkhunter() {
 
     echo "rkhunter installed and configured. Run 'rkhunter --check' to verify."
 }
+
+
+
+function configure_fail2ban_for_services() {
+    echo "Configuring Fail2Ban for additional services..."
+
+    local SERVICES=("apache-auth" "nginx-http-auth" "postfix" "dovecot")
+
+    for SERVICE in "${SERVICES[@]}"; do
+        sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+        sudo sed -i "s/\[$SERVICE\]/\[$SERVICE\]\nenabled = true/" /etc/fail2ban/jail.local
+    done
+
+    sudo systemctl restart fail2ban
+
+    echo "Fail2Ban configured for additional services."
+}
