@@ -183,3 +183,19 @@ function configure_package_caching() {
 
     echo "Packet cache configured."
 }
+
+
+
+function configure_automatic_upgrades() {
+    echo "Configuring automatic updates..."
+
+    echo "Installing unattended-upgrades..."
+
+    sudo apt install -y unattended-upgrades
+
+    echo "Configuring unattended-upgrades..."
+
+    sudo dpkg-reconfigure --priority=low unattended-upgrades
+
+    echo "Automatic updates configured."
+}
