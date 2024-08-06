@@ -295,3 +295,15 @@ EOL
 
     echo "SSH rate limiting configured."
 }
+
+
+
+function configure_ntp() {
+    echo "Configuring NTP for time synchronization..."
+
+    sudo apt install -y ntp
+    sudo systemctl enable ntp
+    sudo systemctl start ntp
+
+    echo "NTP configured and running."
+}
