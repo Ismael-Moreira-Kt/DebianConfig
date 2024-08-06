@@ -127,3 +127,32 @@ function configure_security_updates() {
 
     echo "Automatic security updates configured."
 }
+
+
+
+function install_configure_apparmor_selinux() {
+    echo "Installing and Configuring AppArmor/SELinux..."
+
+    while true; do
+        read -p "Which security module would you like to configure? (1 for AppArmor, 2 for SELinux): " SEC_MODULE
+        case $SEC_MODULE in
+            1)
+                sudo apt install -y apparmor apparmor-utils
+                sudo systemctl enable apparmor
+                sudo systemctl start apparmor
+                echo "AppArmor installed and enabled."
+                break
+                ;;
+            2)
+                sudo apt install -y selinux-basics selinux-utils selinux-policy-default auditd
+                sudo selinux-activate
+                sudo selinux-config-enforcing
+                echo "SELinux installed and configured in enforcing mode."
+                break
+                ;;
+            *)
+                echo "Invalid option. Please choose 1 for AppArmor or 2 for SELinux."
+                ;;
+        esac
+    done
+}
