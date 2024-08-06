@@ -105,3 +105,17 @@ function configure_network_interfaces() {
         fi
     done
 }
+
+
+
+function configure_dhcp() {
+    INTERFACE=$1
+
+    echo "Configuring DHCP on $INTERFACE..."
+
+    sudo ip addr flush dev "$INTERFACE"
+    sudo ip route flush dev "$INTERFACE"
+    sudo dhclient "$INTERFACE"
+
+    echo "DHCP configuration applied to the $INTERFACE interface."
+}
