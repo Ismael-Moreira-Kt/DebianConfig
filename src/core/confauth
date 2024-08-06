@@ -455,3 +455,15 @@ function harden_ssh() {
 
     echo "Hardened SSH configuration."
 }
+
+
+
+function install_configure_fail2ban() {
+    echo "Installing and Configuring Fail2Ban..."
+
+    sudo apt install -y fail2ban
+    sudo systemctl enable fail2ban
+    sudo systemctl start fail2ban
+
+    echo "Fail2Ban installed and configured with default settings."
+}
