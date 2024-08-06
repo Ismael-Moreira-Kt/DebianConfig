@@ -40,3 +40,18 @@ function configure_local_backup() {
 
     echo "Local backup configured and executed from $SOURCE_DIR to $DEST_DIR."
 }
+
+
+
+function configure_remote_backup() {
+    echo "Configuring Remote Backup..."
+
+    read -p "Enter the source directory: " SOURCE_DIR
+    read -p "Enter the remote user: " REMOTE_USER
+    read -p "Enter the remote server IP or hostname: " REMOTE_HOST
+    read -p "Enter the destination directory on the remote server: " DEST_DIR
+
+    rsync -avh --delete $SOURCE_DIR $REMOTE_USER@$REMOTE_HOST:$DEST_DIR
+
+    echo "Remote backup configured and executed from $SOURCE_DIR to $REMOTE_USER@$REMOTE_HOST:$DEST_DIR."
+}
