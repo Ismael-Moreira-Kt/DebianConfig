@@ -82,3 +82,26 @@ function configure_automatic_backup() {
 
     echo "Automatic backup configured."
 }
+
+
+
+function configure_network_interfaces() {
+    echo "Configuring all network interfaces..."
+
+    INTERFACES=$(ip link show | awk '/^[0-9]+:/{print $2}' | sed 's/://')
+
+    for INTERFACE in $INTERFACES; do
+        echo "Configuring interface: $INTERFACE"
+        sudo ip link set "$INTERFACE" up
+
+        if ip link show "$INTERFACE" | grep -q 'ether'; then
+            echo "$INTERFACE is an Ethernet interface."
+            configure_dhcp "$INTERFACE"
+        elif ip link show "$INTERFACE" | grep -q 'wl\|wlan'; then
+            echo "$INTERFACE is a Wi-Fi interface."
+            configure_dhcp "$INTERFACE"
+        else
+            echo "$INTERFACE is of unknown type."
+        fi
+    done
+}
