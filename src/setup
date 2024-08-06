@@ -14,6 +14,8 @@ source "src/core/en/cpm"
 source "src/core/pt/cpm"
 source "src/core/en/css"
 source "src/core/pt/css"
+source "src/core/en/cb"
+source "src/core/pt/cb"
 
 
 
@@ -105,7 +107,7 @@ function setup_pt() {
             3) configure_system_pt ;;
             4) configure_package_management_pt ;;
             5) configure_security_systems_pt ;;
-            6) echo "Configurar Backup" ;;
+            6) configure_backup_pt ;;
             7) echo "Configurar tudo Automaticamente" ;;
             8) 
                 clear
@@ -148,7 +150,7 @@ function setup_en() {
             3) configure_system_en ;;
             4) configure_package_management_en ;;
             5) configure_security_systems_en ;;
-            6) echo "Configure Backup" ;;
+            6) configure_backup_en ;;
             7) echo "Configure everything Automatically" ;;
             8) 
                 clear

@@ -1,0 +1,29 @@
+#!/bin/bash
+
+
+
+function configure_backup_en() {
+    local CHOICE=-1
+
+    while true; do
+        clear
+
+        echo "Choose an option to configure backup:"
+        echo "1. Configure Local Backup"
+        echo "2. Configure Remote Backup"
+        echo "3. Configure Automatic Backup"
+        echo "4. Show Current Backup Configuration"
+        echo "5. Return to Main Menu"
+
+        read -p "Your choice (1-5): " CHOICE
+
+        case $CHOICE in
+            1) configure_local_backup ;;
+            2) configure_remote_backup ;;
+            3) configure_automatic_backup ;;
+            4) show_backup_configuration ;;
+            5) break ;;
+            *) echo "Invalid option. Please try again." ;;
+        esac
+    done
+}
