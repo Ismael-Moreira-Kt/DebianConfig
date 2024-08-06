@@ -301,3 +301,14 @@ function configure_power_settings() {
 
     echo "Power settings configured with TLP."
 }
+
+
+
+function update_firmware() {
+    echo "Updating the system firmware..."
+
+    sudo apt install -y fwupd
+    sudo fwupdmgr update
+
+    echo "Updated system firmware."
+}
